@@ -1,0 +1,5 @@
+"product_name","slab","product_type","product_type_code","quality","price","color","net_width","net_height","net_unit","		dimension
+(Width,Height,Thickness,Unit)","images","product_description","bundle_description","inspection_report"
+"granite","Slab-1","Y",1,"Good",100,"#088",100,100,"inch","100|100|2|undefined","","demo",,"demo"
+,,,,,,,,,,"200|200|3|undefined",,,,
+,"Slab-2",,,,,,,,,,,,,

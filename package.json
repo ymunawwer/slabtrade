@@ -1,0 +1,28 @@
+{
+  "name": "slabtrade",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "chai": "^4.2.0",
+    "cookie-parser": "~1.4.3",
+    "csvtojson": "^2.0.8",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "fast-csv": "^2.4.1",
+    "hbs": "~4.0.1",
+    "http-errors": "~1.6.2",
+    "json2csv": "^4.3.1",
+    "jsonwebtoken": "^8.4.0",
+    "morgan": "~1.9.0",
+    "multer": "^1.4.1",
+    "node-sass": "^4.10.0",
+    "nodemailer": "^4.7.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
