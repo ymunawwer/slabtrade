@@ -11,7 +11,6 @@ const CartSchema = new Schema({
         bundle_id:{
                 type:String,
                 required:true,
-                unique:true,
                 
                 validate:{
                     validator:function(v){
@@ -57,15 +56,18 @@ const CartSchema = new Schema({
  
     tax:{
         type:Number,
+        default:0,
         required:true
 
     },
     shipping_cost:{
         type:Number,
+        default:0,
         required:true
     },
     cart_total:{
         type:Number,
+        default:0,
         required:true
     }
 

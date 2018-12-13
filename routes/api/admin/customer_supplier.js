@@ -6,7 +6,7 @@ var countCtrl = require('../../../controllers/admin/count')
 router.get('/list',auth.checkAdminToken,confirmCtrl.allUser);
 router.get('/approve',auth.checkAdminToken,confirmCtrl.approveUser);
 router.get('/reject',auth.checkAdminToken,confirmCtrl.rejectUser);
-router.get('/suppliercount',auth.checkAdminToken,countCtrl.supplierCount);
+router.get('/count',auth.checkAdminToken,countCtrl.supplierCount);
 router.get('/customercount',auth.checkAdminToken,countCtrl.customerCount);
 
 

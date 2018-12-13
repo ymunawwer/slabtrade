@@ -29,6 +29,7 @@ const deleteAllItemFromCart = async (req, res, next) => {
 
 const addToCart = async (req, res, next) => {
     // console.log(req.body);
+    console.log(req.body.bundle)
     var bundle = {'bundle':req.body.bundle};
     
     
@@ -38,7 +39,7 @@ const addToCart = async (req, res, next) => {
     // if(remainder>0 && container_size!==0){
     //     container_size+=1;
     // }
-
+    
     // if(container_size>0){
     //     console.log(container_size);
     let updated_data = {
@@ -54,7 +55,9 @@ const addToCart = async (req, res, next) => {
 
  
     Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
-        if (err) return res.send(500, {'error_code':500, 'error': err });
+        if (err)  {console.log(err)
+           return  res.send(500, {'error_code':500, 'error': err });
+        }
         return res.status(200).json({'error_code':200,'message':"succesfully saved"});
     });
     
@@ -82,7 +85,7 @@ const allItemInCart = async (req, res, next) => {
         else if (result.length === 0) {
             res.status(200).json({"error_code":200,"message":"Cart is Empty"});
         } else if (result.length !== 0) {
-            res.status(200).json(result);
+            res.status(200).json({"error_code":200,"message":"Cart is not Empty","data":result});
         }
     })
 

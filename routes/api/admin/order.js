@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.get('/getpending',orderService.getPendingOrderList);
 
-router.get('/getapproved',orderService.getApprovedOrderList);
+router.get('/getapproved',orderService.getOrderList);
 
 router.get('/getallorder',orderService.getOrderList);
 

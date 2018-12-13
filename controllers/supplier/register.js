@@ -1,7 +1,7 @@
 var user = require('../../models/user');
 var mail = require('../../services/mailService');
 const register = async(req,res,next)=>{
-
+console.log(req);
 var varuser = user.registerUser(req.body.alias,req.body.email,req.body.first_name, req.body.last_name,req.body.middle_name,req.body.password,req.body.home_phone,req.body.work_phone,req.body.cell_phone,'active',req.body.address,req.body.city,req.body.state,req.body.country,req.body.zip,'supplier');
 
  varuser.then(function(){

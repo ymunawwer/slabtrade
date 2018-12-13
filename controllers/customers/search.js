@@ -199,6 +199,18 @@ const searchQuery = async (req,res,next)=>{
 }
 
 
+const getAllProduct=async(req,res,next)=>{
+    products.find({'supplier_id':req.query.supplier_id}).limit(4).exec((err,result)=>{
+        if(err){
+            res.status(500).json({
+                'error_code':500,
+                'message':err})
+        }
+        res.status(200).json({'error_code':200,'data':result})
+    })
+}
+
+
 
 
 
@@ -206,5 +218,6 @@ module.exports = {
     firstPageProductwithprice,
     searchQuerywithprice,
     firstPageProduct,
-    searchQuery
+    searchQuery,
+    getAllProduct
 }

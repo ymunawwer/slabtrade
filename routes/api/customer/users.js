@@ -37,6 +37,8 @@ router.get('/firstpageproductlist',customerController.firstPageProduct);
 
 //tomorrow
 
+
+
 router.post('/deletecart',auth.checkToken,cartCtrl.deleteAllItemFromCart);
 
 router.post('/sendMail',mail.sendMail)
@@ -55,6 +57,9 @@ router.get('/test',function(req,res,next){
   const x = auth.checkToken(req,res,next);
   console.log(req.user);
 });
+
+
+router.get('/getsimilarproduct',customerController.getAllProduct);
 
 
 

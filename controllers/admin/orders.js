@@ -29,5 +29,5 @@ const fetchAllApprovedOrders = async (req,res,next)=>{
 
 
 module.exports ={
-    fetchAllOrders
+    fetchAllOrders,fetchAllPendingOrders,fetchAllApprovedOrders
 }

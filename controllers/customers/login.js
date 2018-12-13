@@ -1,6 +1,7 @@
 
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
+var userModel =require('../../models/user');
 const login = async(req,res,next)=>{
     passport.authenticate('user-login', {session: false,failureRedirect: '/login'}, function(err, user, info){
         
@@ -22,9 +23,15 @@ const login = async(req,res,next)=>{
       
       const token = jwt.sign({'user':user}, 'your_jwt_secret',{expiresIn: 6000});
       if(user){
-      return res.json({user, token});
-      }
+        console.log(req)
+        userModel.findOne({'email':req.body.email}).exec(function(err,result){
+          let user_detail = {'id':result._id,'name':result.first_name,'user':user}
+          return res.json({user_detail, token});
+        })
+      
+      }else{
       res.redirect('/login');
+      }
    });
   })(req, res,next);
     

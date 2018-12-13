@@ -149,7 +149,7 @@ const uploadCsv = async (req, res, next) => {
     csv()
         .fromFile(req.files[0].path)
         .then(async (jsonObj) => {
-          
+                    console.log(jsonObj)
                     var dimension_arr = [];
                   
                     var net_dimension = [];
@@ -195,18 +195,20 @@ const uploadCsv = async (req, res, next) => {
                 //     }
                     
                
-                  
+                   i =-1;
+                   flag =0 
 
-                    jsonObj.forEach(function (item) {
+                    jsonObj.forEach(function (item,index) {
                         
                         // console.log(product_obj)
                        
-                        if (item.product_name !== '') {
-                            
+                        if ((item.product_name !== '' && flag === 1) || jsonObj.length===index) {
+                            products.push(product_obj);
                             dimension_arr.length = 0;
-                         
-                            
+                            flag = 0
+                            i=i+1
                         }
+                       
 
                         dimension = item['\t\tdimension\n(Width,Height,Thickness,Unit)'].split('|');
 
@@ -232,8 +234,12 @@ const uploadCsv = async (req, res, next) => {
                             }];
                         }
                         
+                        // console.log(dimension_arr)
+                       
+                      
+                       
 
-                        if (item.product_name !== '') {
+                        if (item.product_name !== '' ) {
                             
                             product_obj = {
                                 'product_name': item.product_name,
@@ -248,21 +254,30 @@ const uploadCsv = async (req, res, next) => {
                                 'slab_weight': item.slab_weight,
                                 'bundle_number': item.bundle_number,
                                 'no_of_slabs': item.no_of_slabs,
-                                'dimension': dimension_obj,
+                                'dimension': dimension_arr,
                                 'net_weight': item.net_weight,
                                 'product_description': item.product_description,
                                 'inspection_report': item.inspection_report
                             };
-                           
-                                products.push(product_obj);
-                           
+                            
+                           flag = 1
+                            //    console.log(product_obj)
+                              
                             
                             
+                        }else{
+                            product_obj.dimension = dimension_arr
+                         //  console.log(product_obj)
                         }
+                        // console.log('p',products)
+                      
+                        
                        
                        
 
                     })
+                    
+                    // console.log(products)
                     vaild_doc=true
                    for(item of products){
                      try{
