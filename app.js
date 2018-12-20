@@ -60,7 +60,7 @@ app.use('/admin/confirmuser',adminRegisterConfirmationRouter);
 app.use('/admin',adminRouter);
 
 
-mongoose.connect('mongodb://localhost:27017/SlabTrade', function(err,db) {
+mongoose.connect('mongodb://18.224.140.205:27017/SlabTrade', function(err,db) {
   if (err) throw err;
   console.log('Successfully connected to MongoDB');
 });
