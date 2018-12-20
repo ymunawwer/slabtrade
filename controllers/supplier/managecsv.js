@@ -137,14 +137,14 @@ const downloadCsv = async (req, res, next) => {
 
 const uploadCsv = async (req, res, next) => {
     var obj;
-
+console.log(req.files[0].mimetype)
     if (req.files[0].mimetype !== 'text/csv') {
         res.status(422).send({
             'error_code': 422,
             'message': 'please upload proper CSV file.'
         })
     }
-   
+   else{
 
     csv()
         .fromFile(req.files[0].path)
@@ -316,7 +316,7 @@ const uploadCsv = async (req, res, next) => {
         }).catch((err) => {
             console.log(err);
         });
-
+    }
 }
 
 

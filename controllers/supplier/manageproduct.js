@@ -4,6 +4,7 @@ var mailService = require('../../services/mailService');
 
 
 const addProduct = async (req,res,next)=>{
+    console.log(req.body.slab_weight)
     let images=new Array();
    if(req.files){
     req.files.forEach(function(image){
@@ -16,6 +17,7 @@ const addProduct = async (req,res,next)=>{
         product.then(function(result){
             res.status(200).send(result);
         }).catch(function(err){
+            console.log(err)
             res.status(500).send("Bundle Upload Failed:\n"+err);
         })
           
@@ -53,8 +55,15 @@ const removeProduct = async(req,res,next)=>{
 //requ
 
 const updateProduct = async(req,res,next)=>{
+    console.log(req.body)
+    let net_dimension = {
+        'width':req.body.width || 0,
+        'height':req.body.height || 0,
+        'unit':req.body.unit || 0
+
+    }
     var product_obj = {
-        'product_name': req.product_name,
+        'product_name': req.body.product_name,
         'supplier_id': req.body.supplier_id,
         'bundle_number': req.body.bundle_number,
         'product_type': req.body.product_type,
@@ -62,17 +71,17 @@ const updateProduct = async(req,res,next)=>{
         'quality': req.body.quality,
         'price': req.body.price,
         'color': req.body.color,
-        'net_dimension': req.body.net_dimension,
+        'net_dimension': net_dimension,
         'slab_weight': req.body.slab_weight,
-        'bundle_number': item.bundle_number,
+        'bundle_number': req.body.bundle_number,
         'no_of_slabs': req.body.no_of_slabs,
-        'dimension': req.body.dimension_arr,
+        'dimension': req.body.dimension,
         'net_weight': req.body.net_weight,
         'product_description': req.body.product_description,
         'inspection_report': req.body.inspection_report
     };
 
-    product.findOneAndUpdate({'bundle_number':req.body.bundle_number},product_obj,function(err,result){
+    Product.findOneAndUpdate({'bundle_number':req.body.bundle_number},product_obj,function(err,result){
         if(err){
             res.status(500).json({
                 'error_code':500,
@@ -102,16 +111,19 @@ const updateProduct = async(req,res,next)=>{
 const getAllProduct=async(req,res,next)=>{
     Product.find({'supplier_id':req.query.supplier_id},(err,result)=>{
         if(err){
+            
             res.status(500).json({
                 'error_code':500,
                 'message':err})
         }
         res.status(200).json(result)
     })
+
 }
 
 
 const uploadShippingDetail=async(req,res,next)=>{
+    console.log(req.body)
     let docs = new Array();
     if(req.files){
         req.files.forEach(function(file){
@@ -123,7 +135,7 @@ const uploadShippingDetail=async(req,res,next)=>{
         Order.updateOne({'supplier_id':req.body.supplier_id,'_id':req.body._id},{$set:{'shipping_doc':docs}},(err,result)=>{
            
             if(err){
-               
+                console.log(err)
                 res.status(500).json({
                     'error_code':500,
                     'message':err

@@ -62,9 +62,12 @@ router.post('/uploadshippingdetail',bundleUpdate.shipment_upload.array('shipping
 
 
 router.get('/getallproduct',auth.checkToken,manageProduct.getAllProduct);
-router.get('/csvdownload',auth.checkToken,managecsv.downloadCsv);
+router.get('/getallorder',auth.checkToken,orderService.getallorderBySupplier);
+router.get('/csvdownload',managecsv.downloadCsv);//,auth.checkToken
 router.post('/uploadBulkProduct',bundleUpdate.bulk_update.array('product_csv',1),managecsv.uploadCsv);
 
 router.post('/orderstatus',auth.checkToken,orderService.orderStatus);
+router.get('/getcustomer',auth.checkToken,registerCtrl.getUserName);
+router.get('/gerorder',auth.checkToken,orderService.getOrderDetail);
 
 module.exports = router;

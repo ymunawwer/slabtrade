@@ -17,7 +17,7 @@ router.use('/customer',
 router.use('/port',
     require('./port'))
 
-router.use('/order',auth.checkAdminToken,require('./order'))
+router.use('/order',auth.checkAdminToken,require('./order'));
 
 
 

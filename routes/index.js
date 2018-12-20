@@ -9,9 +9,9 @@ router.get('/',auth.checkToken,function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/login',passport.authenticate('local-login', { failureRedirect: '/login' }),function(req,res,next){
-  res.redirect('/');
-})
+// router.post('/login',passport.authenticate('local-login', { failureRedirect: '/login' }),function(req,res,next){
+//   res.redirect('/');
+// })
 
 
 module.exports = router;

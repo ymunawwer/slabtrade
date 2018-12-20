@@ -12,6 +12,7 @@ const cartCtrl = require('../../../controllers/customers/cart');
 const mail = require('../../../services/mailService');
 const orderCtrl = require('../../../controllers/customers/order');
 const orderService = require('../../../services/order')
+const portService = require('../../../services/port');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -49,18 +50,22 @@ router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to crea
 
 router.get('/cart',auth.checkToken,cartCtrl.allItemInCart);
 
-router.post('/checkout',auth.checkToken,orderCtrl.checkOut);
+router.post('/checkout',orderCtrl.checkOut);
 
 router.post('/orderstatus',auth.checkToken,orderService.orderStatus)
+
+router.get('/getport',portService.getPortDetail)
 
 router.get('/test',function(req,res,next){
   const x = auth.checkToken(req,res,next);
   console.log(req.user);
 });
 
+router.get('/allorder',auth.checkToken,orderService.getallOrderByCustomer)
 
 router.get('/getsimilarproduct',customerController.getAllProduct);
 
+router.get('/getorder',auth.checkToken,orderService.getOrderDetail);
 
 
 module.exports = router;

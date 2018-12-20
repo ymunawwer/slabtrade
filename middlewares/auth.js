@@ -45,6 +45,7 @@ let checkAdminToken = (req, res, next) => {
       console.log(token);
     jwt.verify(token, 'your_jwt_secret', (err, decoded) => {
       if (err) {
+        
         return res.json({
           error_code:401,
           success: false,

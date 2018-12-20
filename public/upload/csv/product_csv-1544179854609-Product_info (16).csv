@@ -1,6 +1,0 @@
-product_name,product_type,product_type_code,bundle_number,quality,price,color,net_width,net_height,net_unit,"		dimension
-(Width,Height,Thickness,Unit)",images,no_of_slabs,net_weight,product_description,bundle_description,inspection_report
-granite,Y,1,19912,good,100,#088,100,100,inch,100|100|2|undefined,,4,400,demo,,demo
-,,,,,,,,,,200|200|3|undefined,,,,,,
-granite,Y,1,19913,Bad,100,#088,100,100,inch,100|100|2|undefined,,4,400,demo,,demo
-,,,,,,,,,,200|200|3|undefined,,,,,,

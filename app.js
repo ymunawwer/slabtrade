@@ -9,7 +9,7 @@ var usersRouter = require('./routes/api/customer/users');
 var supplierRouter = require('./routes/api/supplier/users')
 var adminRegisterConfirmationRouter = require('./routes/api/admin/customer_supplier');
 var adminRouter = require('./routes/api/admin/user');var adminRouter = require('./routes/api/admin/index');
-
+var cors = require('cors')
 require('./config/passport.js')(passport);
 var mongoose = require('mongoose');
 
@@ -19,18 +19,43 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+// app.use(cors())
+
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   res.header()
+
+//   next();
+// });
+
+const allowCrossDomain = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Auth');
+ 
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    console.log("demo")
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+ };
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(allowCrossDomain);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/products/')));
 app.use(passport.initialize())
 
 
 app.use('/', indexRouter);
 app.use('/customer/', usersRouter);
-app.use('/supplier/', supplierRouter);
+app.use('/supplier/',supplierRouter);
 app.use('/admin/confirmuser',adminRegisterConfirmationRouter);
 app.use('/admin',adminRouter);
 

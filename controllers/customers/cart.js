@@ -3,7 +3,7 @@ var Order = require('../../models/order');
 
 
 const deleteAllItemFromCart = async (req, res, next) => {
-    console.log(req.body);
+    console.log("delete",req.body);
     
     Cart.findOneAndDelete({ 'user_id': req.body.id }, function(err,result) {
         console.log(result);
@@ -28,8 +28,8 @@ const deleteAllItemFromCart = async (req, res, next) => {
 
 
 const addToCart = async (req, res, next) => {
-    // console.log(req.body);
-    console.log(req.body.bundle)
+    console.log('bundle',req.body.total_quantity);
+    
     var bundle = {'bundle':req.body.bundle};
     
     
@@ -43,11 +43,13 @@ const addToCart = async (req, res, next) => {
     // if(container_size>0){
     //     console.log(container_size);
     let updated_data = {
+        // "supplier_id":req.body.supplier_id,
         'user_id': req.body.user_id,
         'bundle': req.body.bundle,
         'tax': req.body.tax,
         'shipping_cost': req.body.shipping_cost,
-        'cart_total': req.body.cart_total
+        'cart_total': req.body.cart_total,
+        'total_quantity':req.body.total_quantity
     };
 
 
@@ -55,6 +57,7 @@ const addToCart = async (req, res, next) => {
 
  
     Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
+       
         if (err)  {console.log(err)
            return  res.send(500, {'error_code':500, 'error': err });
         }

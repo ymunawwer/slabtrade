@@ -6,11 +6,14 @@ var mail = require('../../services/mailService');
 
 const checkOut = async (req, res, next) => {
     // console.log(req.body);
+
     var orderconfirm = {};
     let bundle = [
-        []
+     
     ];
-    cart.findOne({
+    try{
+    console.log("checkout")
+   await cart.findOne({
         'user_id': req.body.user_id
     }).exec(async function (err, doc) {
         if (err) {
@@ -28,8 +31,10 @@ const checkOut = async (req, res, next) => {
 
         } else if (doc !== null) {
 
-            console.log(doc.bundle.length);
+            console.log(doc.bundle[0].quantity);
+            // var remainder = Math.floor(doc.bundle.length % 6)
             var remainder = Math.floor(doc.bundle.length % 6)
+            // var container_size = Math.floor((doc.bundle.length - remainder) / 6);
             var container_size = Math.floor((doc.bundle.length - remainder) / 6);
 
             if (remainder > 0 && container_size !== 0) {
@@ -42,10 +47,10 @@ const checkOut = async (req, res, next) => {
 
                 var i = 0;
                 for (let items of doc.bundle) {
-                    console.log(items.Dimension);
+                    
                     var dimensionArray = [];
                     for (dimension of items.Dimension) {
-                        console.log(dimension.width);
+                        
                         let dimension1 = {
                             'width': dimension.width,
                             'height': dimension.height,
@@ -59,17 +64,21 @@ const checkOut = async (req, res, next) => {
                     bundle.push({
                         'bundle_id': items.bundle_id,
                         'dimension': dimension,
-                        'quantity': items.quantity
+                        'quantity': items.quantity,
+                        'price':items.price
                     });
 
                 }
-                console.log(bundle)
+
+                
+                
 
 
 
                 orderconfirm = {
                     'user_id': doc.user_id,
                     'supplier_id': doc.supplier_id,
+                    'name':req.body.name,
                     'cancel_status': doc.cancel_status,
                     'payment': req.body.payment,
                     'products': bundle,
@@ -87,17 +96,18 @@ const checkOut = async (req, res, next) => {
                             "message": "Please try again later"
                         })
                     }
-                    console.log(result);
+                   else{
                     cart.findOneAndDelete({
                         'user_id': req.body.user_id
                     }, (err, result) => {
                         if (err) {
+                            console.log(err)
                             res.status(500).json({
                                 "error_code": 500,
                                 "message": "Please try again later"
                             })
                         }
-                        console.log(result)
+                        else {
                         user.findById(req.body.user_id,function(err,result){
                             if(err){
                                 res.status(500).json({
@@ -109,20 +119,31 @@ const checkOut = async (req, res, next) => {
                             mail.sendMailFunction(result.email,'Order placed successfuly','','<b>Hi</b><br>Thank you for shopping wit us.<br><br><br><b>Thank You</b>');
 
                         })
+                    }
                         res.json({
                             'error_code': 200,
                             'message': 'Order Placed Succesfully'
                         });
 
                     })
+                }
 
                 });
                 //if payment fail 2000 and more 2001 for insuffiecient fund prompt user with error message
+            }else {
+                res.json({
+                    'error_code': 200,
+                    'message': 'Container is not full'
+                });
+
             }
         }
 
     })
+    }catch(err){
+        console.log(err)
 
+    }
 
 
 

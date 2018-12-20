@@ -16,6 +16,28 @@ var varuser = user.registerUser(req.body.alias,req.body.email,req.body.first_nam
 
 
 }
+
+
+const getUserName = async(req,res,next)=>{
+    user.findById(req.query.id).exec((err,result)=>{
+        if(err){
+            res.status(500).json({
+                "error_code":500,
+                "message":"Please try again",
+
+            })
+        }  if(result!==null){
+        res.status(200).json({
+          
+            "error_code":200,
+            "data":result.first_name
+            
+        })
+    }else{
+        next();
+    }
+    })
+}
 module.exports={
-    register
+    register,getUserName
 }

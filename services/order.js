@@ -1,6 +1,7 @@
 var Order = require('../models/order');
 var mailService = require('../services/mailService')
 var User = require('../models/user')
+var mongoose = require('mongoose');
 
 
 const getOrderList = function(req,res,next){
@@ -142,6 +143,7 @@ const getPendingOrderList = function(req,res,next){
 
 
 const orderStatus = function(req,res,next){
+    console.log("vg")
     Order.findOneAndUpdate({'_id':req.body._id},{$set:{'cancel_status':req.body.status}}).exec((err,result)=>{
         if(err){
             res.status(500).json({
@@ -172,13 +174,127 @@ const orderStatus = function(req,res,next){
 }
 
 
+const getallorderBySupplier = function(req,res,next){
+  
+    Order.aggregate([
+        {$match: {'products.supplier_id': mongoose.Types.ObjectId(req.query.id)}},
+        {$project: {
+                name: 1,
+            user_id:1,
+            payment:1,
+            created_at:1,
+            _id:1,
+            
+               products: {$filter: {
+                   input: '$products',
+                   as: 'products',
+                   cond: {$eq: ['$$products.supplier_id', mongoose.Types.ObjectId(req.query.id)]}
+               }},
+              
+           }}
+        ]).exec(function(err,result){
+        if(err){
+            res.status(500).json({
+                "error_code":500,
+                "message":"please try again"
+            })
+        }
+        
+        if(result.length!==0){
+       
+            // console.log(result[0]['products'])
+            res.status(200).json({
+                
+                "error_code":200,
+                "message":"list of orders",
+                "data":result
+            })
+        }else{
+            res.status(200).json({
+                "error_code":200,
+                "message":"No order",
+                "data":result
+            })
+
+        }
+    })
+
+
+
+}
+
+
+const getallOrderByCustomer = function(req,res,next){
+  
+    Order.find({'user_id':req.query.id}).exec(function(err,result){
+        if(err){
+            res.status(500).json({
+                "error_code":500,
+                "message":"please try again"
+            })
+        }
+     
+        if(result.length!==0){
+            
+            res.status(200).json({
+                
+                "error_code":200,
+                "message":"list of orders",
+                "data":result
+            })
+        }else{
+            res.status(200).json({
+                "error_code":200,
+                "message":"No order",
+                "data":result
+            })
+
+        }
+    })
+
+
+
+}
+
+
+
+
+
+
+
+const getOrderDetail =async (req,res,next)=>{
+
+    Order.findById(req.query.id).exec(function(err,result){
+        if(err){
+            res.status(500).json({
+                "error_code":500,
+                "message":"Please try again later"
+            })
+        }
+        else{
+            res.status(200).json({
+                "error_code":200,
+                "message":"Order Details",
+                "data":result
+            })
+        }
+    })
+
+
+}
+
+
+
 
 
 module.exports = {
     getOrderList,
     getPendingOrderList,
     getApprovedOrderList,
-    orderStatus
+    orderStatus,
+    getallorderBySupplier,
+    getallOrderByCustomer,
+    getOrderDetail
 
 }
 

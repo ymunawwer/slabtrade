@@ -1,6 +1,7 @@
 
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
+var cart = require('../../models/cart')
 var userModel =require('../../models/user');
 const login = async(req,res,next)=>{
     passport.authenticate('user-login', {session: false,failureRedirect: '/login'}, function(err, user, info){
@@ -25,8 +26,32 @@ const login = async(req,res,next)=>{
       if(user){
         console.log(req)
         userModel.findOne({'email':req.body.email}).exec(function(err,result){
-          let user_detail = {'id':result._id,'name':result.first_name,'user':user}
-          return res.json({user_detail, token});
+          result.password=undefined
+          if(result.roles[0]==='customer'){
+            cart.find({'user_id':result._id}).exec(function(err,result_cart){
+              if(result_cart[0]!==undefined){
+              // result['total_quantity']=result_cart[0].total_quantity;
+              let user_detail = {'user_detail':result,'user':user}
+              user_detail['total_quantity']=result_cart[0].total_quantity;
+              console.log(user_detail)
+              
+              return res.json({user_detail, token});
+              }else{
+                let user_detail = {'user_detail':result,'user':user}
+               
+                
+                return res.json({user_detail, token});
+              }
+  
+            })
+
+          }else{
+            let user_detail = {'user_detail':result,'user':user}
+         
+            return res.json({user_detail, token});
+          }
+       
+          
         })
       
       }else{

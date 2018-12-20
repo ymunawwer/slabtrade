@@ -7,7 +7,9 @@ const CartSchema = new Schema({
         required:true,
         unique:true
     },
+    
     bundle:[{
+        
         bundle_id:{
                 type:String,
                 required:true,
@@ -18,6 +20,7 @@ const CartSchema = new Schema({
                     }
                 }
             },
+            supplier_id:{ type: Schema.Types.ObjectId, ref: 'supplier' },
             bundle_name:{
                 type:String,
                 required:true
@@ -48,11 +51,20 @@ const CartSchema = new Schema({
                 type:Number,
                 required:true
             },
+            total:{
+                type:Number,
+                required:true
+            }
             
     
             
 
     }],
+    total_quantity:{
+        type:Number,
+        default:0,
+        required:true
+    },
  
     tax:{
         type:Number,
