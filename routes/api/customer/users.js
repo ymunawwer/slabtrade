@@ -56,6 +56,8 @@ router.post('/orderstatus',auth.checkToken,orderService.orderStatus)
 
 router.get('/getport',portService.getPortDetail)
 
+router.get('/getportbycountry',portService.getPortDetailByCountry)
+
 router.get('/test',function(req,res,next){
   const x = auth.checkToken(req,res,next);
   console.log(req.user);

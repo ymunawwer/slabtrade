@@ -1,6 +1,7 @@
 const Product = require('../../models/products');
 const Order = require('../../models/order');
 var mailService = require('../../services/mailService');
+var mongoose = require('mongoose');
 
 
 const addProduct = async (req,res,next)=>{
@@ -132,7 +133,7 @@ const uploadShippingDetail=async(req,res,next)=>{
             });
         
      
-        Order.updateOne({'supplier_id':req.body.supplier_id,'_id':req.body._id},{$set:{'shipping_doc':docs}},(err,result)=>{
+        Order.updateOne({'_id':mongoose.Types.ObjectId(req.body._id)},{$set:{'shipping_doc':docs}},(err,result)=>{
            
             if(err){
                 console.log(err)

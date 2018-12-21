@@ -23,7 +23,20 @@ const getPortDetail = async (req,res,next)=>{
 
 }
 
+const getPortDetailByCountry = async (req,res,next)=>{
+    country = req.query.port_id;
+    country = country.toLowerCase()
+    port.findOne({'country':country}, function(err, doc){
+        if (err) return res.status(500).json({'error_code':500 ,'error': err });
+        return res.status(200).json({'error_code':200,'message':'ports details','data':doc});
+    });
+
+
+
+}
+
 module.exports = {
     getAllPort,
-    getPortDetail
+    getPortDetail,
+    getPortDetailByCountry
 }

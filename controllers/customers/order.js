@@ -5,8 +5,8 @@ var user = require('../../models/user');
 var mail = require('../../services/mailService');
 
 const checkOut = async (req, res, next) => {
-    // console.log(req.body);
-
+    console.log('checkout',req.body);
+    
     var orderconfirm = {};
     let bundle = [
      
@@ -31,7 +31,7 @@ const checkOut = async (req, res, next) => {
 
         } else if (doc !== null) {
 
-            console.log(doc.bundle[0].quantity);
+            console.log(doc);
             // var remainder = Math.floor(doc.bundle.length % 6)
             var remainder = Math.floor(doc.bundle.length % 6)
             // var container_size = Math.floor((doc.bundle.length - remainder) / 6);
@@ -62,6 +62,7 @@ const checkOut = async (req, res, next) => {
                     //     let dimension = {'width':items.Dimension.width,'height':items.Dimension.height,'unit':items.Dimension.unit}
                     //     console.log(dimension);
                     bundle.push({
+                        'supplier_id':items.supplier_id,
                         'bundle_id': items.bundle_id,
                         'dimension': dimension,
                         'quantity': items.quantity,
@@ -77,16 +78,19 @@ const checkOut = async (req, res, next) => {
 
                 orderconfirm = {
                     'user_id': doc.user_id,
-                    'supplier_id': doc.supplier_id,
+                    
                     'name':req.body.name,
-                    'cancel_status': doc.cancel_status,
+                    'cancel_status': "Pending",
                     'payment': req.body.payment,
                     'products': bundle,
                     'container_no': doc.container_no,
-                    'price': doc.price,
+                    
                     'tax': req.body.tax,
                     'service': req.body.service,
-                    'total': req.body.total
+                    'total': req.body.total,
+                    'port':req.body.port,
+                    'unload':req.body.unload,
+                    'shipping_Addr':req.body.shipping_addr
                 };
                 console.log(orderconfirm)
                 order = await new orders(orderconfirm).save(function (err, result) {

@@ -95,6 +95,12 @@ mailing_country:{
 },
 mailing_zip:{
     type:Number
+},
+port:{
+    type:String
+},
+unload:{
+    type:String
 }
 });
 
@@ -136,7 +142,7 @@ class UserClass {
 
     }
 
-    static async registerUser(alias,email,first_name, last_name,middle_name,password, home_phone,work_phone,cell_phone,account_type, address,city,state,country, zip, roles,mailing_address,mailing_city,mailing_state,mailing_country,mailing_zip) {
+    static async registerUser(alias,email,first_name, last_name,middle_name,password, home_phone,work_phone,cell_phone,account_type, address,city,state,country, zip, roles,mailing_address,mailing_city,mailing_state,mailing_country,mailing_zip,port,unload) {
         email = email.toLowerCase();
         let userExist = await this.count({ email });
         if(userExist) throw new Error('Email is already exist.');
@@ -145,7 +151,7 @@ class UserClass {
         let accesstokens = [];
         let user;
         roles = roles ? [roles] : ['user'];
-        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip};
+        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload};
         console.log(user)
         user = await new this(user).save();
         

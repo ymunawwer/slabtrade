@@ -183,6 +183,7 @@ const getallorderBySupplier = function(req,res,next){
             user_id:1,
             payment:1,
             created_at:1,
+            cancel_status:1,
             _id:1,
             
                products: {$filter: {
