@@ -22,7 +22,7 @@ const addPort = async (req,res,next)=>{
 const updatePort = async (req,res,next)=>{
 
     
-    port.updatePort(req.body.port_id,req.body.port_name,req.body.country,req.body.shipping_cost,req.body.port_cost,req.body.tax_percentage,res);
+    port.updatePort(req.body.data.port_id,req.body.data.port_name,req.body.data.country,req.body.data.shipping_cost,req.body.data.port_cost,req.body.data.tax_percentage,res);
 
 
 
