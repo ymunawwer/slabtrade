@@ -18,5 +18,9 @@ router.get('/allport',auth.checkAdminToken,portService.getAllPort);
 router.get('/port',auth.checkAdminToken,portService.getPortDetail);
 
 
+router.get('/getportbycountry',auth.checkAdminToken,portService.getPortDetailByCountry);
+
+
+
 module.exports = router;
 

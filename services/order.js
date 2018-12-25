@@ -2,6 +2,7 @@ var Order = require('../models/order');
 var mailService = require('../services/mailService')
 var User = require('../models/user')
 var mongoose = require('mongoose');
+var products = require('../models/products')
 
 
 const getOrderList = function(req,res,next){
@@ -81,7 +82,8 @@ const getOrderList = function(req,res,next){
         }
         console.log(result);
         
-        res.status(200).json(result);
+        
+        res.status(200).json({'error_code':200,'data':result});
     })
    
 
@@ -156,14 +158,14 @@ const orderStatus = function(req,res,next){
             })
           
             res.status(200).json({
-                'status_code':200,
+                'error_code':200,
                 'Message':'order '+req.body.status +' succesfully'
                 
             })
         }
             else{
                 res.status(200).json({
-                    'status_code':200,
+                    'error_code':200,
                     'data':result,
                     'message':'invalid order id'
                 })

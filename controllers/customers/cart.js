@@ -28,7 +28,7 @@ const deleteAllItemFromCart = async (req, res, next) => {
 
 
 const addToCart = async (req, res, next) => {
-    console.log('bundle',req.body.total_quantity);
+    console.log('bundle',req.body);
     
     var bundle = {'bundle':req.body.bundle};
     
@@ -47,6 +47,7 @@ const addToCart = async (req, res, next) => {
         'user_id': req.body.user_id,
         'bundle': req.body.bundle,
         'tax': req.body.tax,
+        'total_amount':req.body.total_amount,
         'shipping_cost': req.body.shipping_cost,
         'cart_total': req.body.cart_total,
         'total_quantity':req.body.total_quantity

@@ -56,7 +56,30 @@ const rejectUser = async (req,res,next)=>{
     })
 }
 
+const updateType = async (req,res,next)=>{
+    console.log(req.query.type)
+    user.findOneAndUpdate({'email':req.query.id},{$set:{'account_type':req.query.type}},function(err,result){
+        if(err){
+            
+            res.status(500).json({'error_code':500,'data':err});
+        }
+        if(result===null){
+            res.status(200).json({'error_code':200,'message':'User Not Found'});
+        }else{
+        mail.sendMailFunction(req.query.id,'Account Updated','','<b>Hi,<br><br>Thank you for registering with us.Your account is Updated.<br><br><br><br><b>Thank You.</b>');
+        
+        res.status(200).json(result);
+        }
+    })
+
+
+
+
+
+}
+
+
 module.exports = {
-    allUser,
+    allUser,updateType,
     approveUser,rejectUser
 }

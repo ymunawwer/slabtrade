@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
 
 
 const addProduct = async (req,res,next)=>{
-    console.log(req.body.slab_weight)
+    console.log(req.body)
     let images=new Array();
    if(req.files){
     req.files.forEach(function(image){
-            images.push({'path':image.path});
+            images.push({'path':image.location});
             
         });
 

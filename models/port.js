@@ -30,15 +30,19 @@ const portSchema = new Schema({
         type:Number,
         required:true,
         require:'Tax percentage field is required'
+    },
+    facilities_cost:{
+        type:String,
+        required:true
     }
 })
 
 class PortClass{
 
-    static async addPort(port_name,country,shipping_cost,port_cost,tax_percentage){
+    static async addPort(port_name,country,shipping_cost,port_cost,tax_percentage,facilities_cost){
         let port_id = port_name+Math.round(Math.random(100,999));
         let port
-        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage };
+        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage,'facilities_cost':facilities_cost };
         console.log(port);
         port = await new this(port).save();
         port = port.toObject();

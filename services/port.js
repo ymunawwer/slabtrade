@@ -12,6 +12,8 @@ const getAllPort = async (req,res,next)=>{
 }
 
 
+
+
 const getPortDetail = async (req,res,next)=>{
 
     port.find({'port_id':req.query.port_id}, function(err, doc){
@@ -24,9 +26,9 @@ const getPortDetail = async (req,res,next)=>{
 }
 
 const getPortDetailByCountry = async (req,res,next)=>{
-    country = req.query.port_id;
+    country = req.query.country;
     country = country.toLowerCase()
-    port.findOne({'country':country}, function(err, doc){
+    port.find({'country':country}, function(err, doc){
         if (err) return res.status(500).json({'error_code':500 ,'error': err });
         return res.status(200).json({'error_code':200,'message':'ports details','data':doc});
     });
@@ -38,5 +40,6 @@ const getPortDetailByCountry = async (req,res,next)=>{
 module.exports = {
     getAllPort,
     getPortDetail,
-    getPortDetailByCountry
+    getPortDetailByCountry,
+    
 }

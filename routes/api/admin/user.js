@@ -11,7 +11,7 @@ router.get('/fetchallorders',ordersCtrl.fetchAllOrders);
 
 
 
-
+router.get('/getproductdetail',ordersCtrl.getProductDetail);
 
 
 

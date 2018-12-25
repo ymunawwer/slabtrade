@@ -99,7 +99,9 @@ class ProductClass{
     static async addProduct(product_name,supplier_id,product_type,product_type_code,quality,price,color,width,height,unit,thickness,slab_weight,bundle_number,no_of_slabs,dimension,net_dimension,net_weight,images,product_description,Bundle_description,inspection_report){
         let bundleExist = await this.count({ bundle_number });
         if(bundleExist) throw new Error('Bundle is already exist.');
-        dimension=JSON.parse(dimension);
+        console.log('dimension',dimension)
+        // dimension=JSON.parse(dimension);
+        
         dimension.forEach((element,index) => {
             dimension[index]['thickness']=thickness;
 

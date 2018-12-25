@@ -2,7 +2,7 @@ const port = require('../../models/port');
 
 
 const addPort = async (req,res,next)=>{
-    var portpromise = port.addPort(req.body.port_name,req.body.country,req.body.shipping_cost,req.body.port_cost,req.body.tax_percentage);
+    var portpromise = port.addPort(req.body.port_name,req.body.country,req.body.shipping_cost,req.body.port_cost,req.body.tax_percentage,req.body.facilities_cost);
     portpromise.then((result)=>{
         res.status(200).json({
             'error_code':200,

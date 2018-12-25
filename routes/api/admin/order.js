@@ -10,7 +10,10 @@ router.get('/getpending',orderService.getPendingOrderList);
 
 router.get('/getallorder',orderService.getOrderList);
 
+
+
 router.post('/orderstatus',orderService.orderStatus)
+
 
 
 

@@ -60,6 +60,10 @@ const CartSchema = new Schema({
             
 
     }],
+    total_amount:{
+        type:Number,
+        required:true
+    },
     total_quantity:{
         type:Number,
         default:0,
