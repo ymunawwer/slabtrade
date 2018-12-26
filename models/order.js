@@ -61,8 +61,19 @@ var orderSchema = new Schema({
         }
 
 
+    }],
+    wired_doc:[{
+        path:{
+        type:String
+        }
+
+
     }]
     ,
+    payment_status:{
+        type:String,
+        default:"Pending"
+    },
     price:{
         type:Number
     },

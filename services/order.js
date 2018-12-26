@@ -80,10 +80,11 @@ const getOrderList = function(req,res,next){
             res.status(500).json({"error_code":500,"message":err})
             
         }
-        console.log(result);
+       
         
-        
+        else{
         res.status(200).json({'error_code':200,'data':result});
+        }
     })
    
 
@@ -286,6 +287,72 @@ const getOrderDetail =async (req,res,next)=>{
 
 }
 
+getShippingDoc = async (req,res,next)=>{
+    Order.find({
+        '_id': req.query.id
+    }, function (err, result) {
+        if (err) {
+            res.status(500).json({
+                'error_code': 500,
+                'message': err
+            });
+        } else if (result.length === 0) {
+
+            res.status(200).json({
+                'error_code': 200,
+                'message': 'There is no product'
+            });
+        } else if (result.length > 0) {
+            let docs = []
+            result[0]['shipping_doc'].forEach((doc)=>{
+                docs.push(doc.path)
+            })
+            // res.attachment('Product_info.csv');
+            res.status(200).send({"error_code":200,"data":docs});
+        }
+    })
+
+
+
+}
+
+
+getWiredDoc = async (req,res,next)=>{
+    Order.find({
+        '_id': req.query.id
+    }, function (err, result) {
+        if (err) {
+            res.status(500).json({
+                'error_code': 500,
+                'message': err
+            });
+        } else if (result.length === 0) {
+
+            res.status(200).json({
+                'error_code': 200,
+                'message': 'There is no product'
+            });
+        } else if (result.length > 0) {
+            let docs = []
+            
+            console.log(result)
+            // docs.push(result[0]['payment_status'])
+            result[0]['wired_doc'].forEach((doc)=>{
+                docs.push(doc.path)
+            })
+            let obj = {
+                "docs":docs,
+                "payment_status":result[0]['payment_status']
+            }
+            // res.attachment('Product_info.csv');
+            res.status(200).send({"error_code":200,"data":obj});
+        }
+    })
+
+
+
+}
+
 
 
 
@@ -297,7 +364,8 @@ module.exports = {
     orderStatus,
     getallorderBySupplier,
     getallOrderByCustomer,
-    getOrderDetail
+    getOrderDetail,getShippingDoc,
+    getWiredDoc
 
 }
 

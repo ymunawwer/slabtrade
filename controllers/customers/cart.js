@@ -1,5 +1,6 @@
 const Cart = require('../../models/cart');
 var Order = require('../../models/order');
+var mongoose = require('mongoose');
 
 
 const deleteAllItemFromCart = async (req, res, next) => {
@@ -96,6 +97,20 @@ const allItemInCart = async (req, res, next) => {
 
 }
 
+const removeBundle = async (req,res,next)=>{
+    Cart.update({},  { $pull: { bundle: { _id: mongoose.Types.ObjectId(req.query.bundle) } } },{ multi: true},(err,doc)=>{
+        if(err){
+            console.log("error",err)
+            res.status(200).json({"error_code":500,"message":"Please try again","data":err})
+
+        }else{
+            res.status(200).json({"error_code":200,"message":"Removed","data":doc})
+        }
+    });
+        
+    
+    
+}
 
 
 
@@ -106,6 +121,6 @@ const allItemInCart = async (req, res, next) => {
 module.exports = {
     deleteAllItemFromCart,
     addToCart,
-    allItemInCart,
+    allItemInCart,removeBundle
    
 }

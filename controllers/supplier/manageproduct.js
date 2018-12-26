@@ -128,7 +128,8 @@ const uploadShippingDetail=async(req,res,next)=>{
     let docs = new Array();
     if(req.files){
         req.files.forEach(function(file){
-            docs.push({'path':file.path});
+            
+            docs.push({'path':file.location});
                 
             });
         

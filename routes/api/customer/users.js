@@ -39,7 +39,7 @@ router.get('/firstpageproductlist',customerController.firstPageProduct);
 //tomorrow
 
 
-
+router.get('/removecartitem',auth.checkToken,cartCtrl.removeBundle)
 router.post('/deletecart',auth.checkToken,cartCtrl.deleteAllItemFromCart);
 
 router.post('/sendMail',mail.sendMail)

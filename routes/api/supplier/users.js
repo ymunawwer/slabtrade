@@ -64,6 +64,9 @@ router.post('/uploadshippingdetail',bundleUpdate.shipment_upload.array('shipping
 router.get('/getallproduct',auth.checkToken,manageProduct.getAllProduct);
 router.get('/getallorder',auth.checkToken,orderService.getallorderBySupplier);
 router.get('/csvdownload',managecsv.downloadCsv);//,auth.checkToken
+
+router.get('/downloadwireddoc',orderService.getWiredDoc);
+
 router.post('/uploadBulkProduct',bundleUpdate.bulk_update.array('product_csv',1),managecsv.uploadCsv);
 
 router.post('/orderstatus',auth.checkToken,orderService.orderStatus);

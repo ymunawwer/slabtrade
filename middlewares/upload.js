@@ -57,6 +57,19 @@ var shipment_upload = multer({
 })
 
 
+var wired_doc_upload = multer({
+  storage: multerS3({
+    s3: s3bucket,
+    bucket: 'slab-trade-upload',
+    key: function (req, file, cb) {
+      console.log(file);
+      cb(null, file.fieldname + '-' + Date.now()+'-'+file.originalname);
+      
+    }
+  })
+})
+
+
 // var storage_csv = multer.diskStorage({
   
 //   destination: (req, file, cb) => {
@@ -84,5 +97,5 @@ var shipment_upload = multer({
 
 
 module.exports = {
-    upload,bulk_update,shipment_upload
+    upload,bulk_update,shipment_upload,wired_doc_upload
 }
