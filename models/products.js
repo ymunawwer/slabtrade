@@ -82,13 +82,16 @@ const ProductSchema = new Schema({
         required:true
     },
     product_description:{
-        type:String
+        type:String,
+        required:true
     },
     Bundle_description:{
-        type:String
+        type:String,
+        required:true
     },
     inspection_report:{
-        type:String
+        type:String,
+        required:true
     }
 
 })
