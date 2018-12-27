@@ -46,7 +46,9 @@ router.post('/sendMail',mail.sendMail)
 
 router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to create and update cart item
 
+router.get('/shippingdownload',orderService.getShippingDoc);
 
+router.post('/recalculate',auth.checkToken,cartCtrl.itemRemove)
 
 router.get('/cart',auth.checkToken,cartCtrl.allItemInCart);
 

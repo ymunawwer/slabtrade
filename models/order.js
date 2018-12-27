@@ -41,6 +41,9 @@ var orderSchema = new Schema({
             unit:{
                 type:String
             },
+            thickness:{
+                type:Number
+            }
             
             
         }],

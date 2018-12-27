@@ -155,7 +155,7 @@ const orderStatus = function(req,res,next){
             })
         }if(result.length!==null){
             User.findById(result.user_id).exec((err,result)=>{
-                mailService.sendMailFunction(result.email,'Order cancel Confirmation mail','','<b>Hi</b><br>Sorry for the inconvenience<br><br><br><b>Thank You')
+                mailService.sendMailFunction(result.email,'Order'+req.body.status +  'mail','','<b>Hi</b><br>Your Order is'+req.body.status+' by the Supplier.<br><br><br><b>Thank You')
             })
           
             res.status(200).json({
@@ -187,6 +187,7 @@ const getallorderBySupplier = function(req,res,next){
             payment:1,
             created_at:1,
             cancel_status:1,
+            total:1,
             _id:1,
             
                products: {$filter: {

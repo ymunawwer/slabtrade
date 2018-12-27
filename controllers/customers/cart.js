@@ -28,6 +28,19 @@ const deleteAllItemFromCart = async (req, res, next) => {
 }
 
 
+const itemRemove = async (req,res,next) =>{
+    console.log(req.body);
+    Cart.updateOne({'user_id':mongoose.Types.ObjectId(req.body.id)},{$set:{"cart_total":req.body.cart_total,"tax":req.body.tax,"total_amount":req.body.total_amount,"total_quantity":req.body.total_quantity}}, function(err, doc){
+       
+        if (err)  {console.log(err)
+           return  res.send(500, {'error_code':500, 'error': err });
+        }
+        return res.status(200).json({'error_code':200,'message':"succesfully saved"});
+    });
+
+}
+
+
 const addToCart = async (req, res, next) => {
     console.log('bundle',req.body);
     
@@ -121,6 +134,7 @@ const removeBundle = async (req,res,next)=>{
 module.exports = {
     deleteAllItemFromCart,
     addToCart,
-    allItemInCart,removeBundle
+    allItemInCart,removeBundle,
+    itemRemove
    
 }

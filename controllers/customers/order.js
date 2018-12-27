@@ -33,15 +33,16 @@ const checkOut = async (req, res, next) => {
 
             console.log(doc);
             // var remainder = Math.floor(doc.bundle.length % 6)
-            var remainder = Math.floor(doc.bundle.length % 6)
+            var remainder = Math.floor(doc['total_quantity'] % 6)
             // var container_size = Math.floor((doc.bundle.length - remainder) / 6);
-            var container_size = Math.floor((doc.bundle.length - remainder) / 6);
+            console.log(doc['total_quantity'])
+            var container_size = Math.floor((doc['total_quantity'] - remainder) / 6);
 
             if (remainder > 0 && container_size !== 0) {
                 container_size += 1;
             }
 
-            if (container_size > 0) {
+            if (container_size > 0 ) {
                 //check for the payment and if it is 1000 aur 1001 proceed
 
 
@@ -54,7 +55,8 @@ const checkOut = async (req, res, next) => {
                         let dimension1 = {
                             'width': dimension.width,
                             'height': dimension.height,
-                            'unit': dimension.unit
+                            'unit': dimension.unit,
+                            'thickness':items.thickness
                         }
                         dimensionArray.push(dimension1);
                         i++;
@@ -64,7 +66,7 @@ const checkOut = async (req, res, next) => {
                     bundle.push({
                         'supplier_id':items.supplier_id,
                         'bundle_id': items.bundle_id,
-                        'dimension': dimension,
+                        'dimension': dimensionArray[0],
                         'quantity': items.quantity,
                         'price':items.price
                     });
@@ -95,6 +97,7 @@ const checkOut = async (req, res, next) => {
                 console.log(orderconfirm)
                 order = await new orders(orderconfirm).save(function (err, result) {
                     if (err) {
+                        console.log(err)
                         res.status(500).json({
                             "error_code": 500,
                             "message": "Please try again later"
