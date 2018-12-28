@@ -343,7 +343,8 @@ getWiredDoc = async (req,res,next)=>{
             })
             let obj = {
                 "docs":docs,
-                "payment_status":result[0]['payment_status']
+                "payment_status":result[0]['payment_status'],
+                "payment_mode":result[0]['payment']
             }
             // res.attachment('Product_info.csv');
             res.status(200).send({"error_code":200,"data":obj});

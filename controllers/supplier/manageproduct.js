@@ -89,13 +89,14 @@ const updateProduct = async(req,res,next)=>{
                 'message':'Update Fail.please try again later.'
 
             })
+            }
             res.status(200).json({
                 'error_code':200,
                 'message':'Succesfully updated.',
-                'data':doc
+                'data':result
 
             })
-        }
+        
 
     })
 
