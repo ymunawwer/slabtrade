@@ -66,8 +66,13 @@ const addToCart = async (req, res, next) => {
         'cart_total': req.body.cart_total,
         'total_quantity':req.body.total_quantity
     };
-
-
+    Cart.find({'user_id':req.body.user_id}).exec(function(err,result){
+        // console.log("length",res[0]['bundle'][res[0]['bundle'].length-1])
+        // console.log("supplier id",req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,""));
+        if(result.length!==0){
+        if(req.body['bundle'][req.body['bundle'].length-1]['supplier_id']===JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"")){
+  
+         
 
 
  
@@ -78,7 +83,32 @@ const addToCart = async (req, res, next) => {
         }
         return res.status(200).json({'error_code':200,'message':"succesfully saved"});
     });
-    
+}
+else if( req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"") ){
+    if(result[0]['total_quantity']%6!==0){
+        res.status(200).json({"error_code":200,"Message":"Please add more item to the container.","data":{"bundle_id":result[0]['bundle'][result[0]['bundle'].length-1]['bundle_id'],"bundle_name":result[0]['bundle'][result[0]['bundle'].length-1]['bundle_name'],"supplier_id":result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']}})
+    }else{
+        Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
+       
+            if (err)  {console.log(err)
+               return  res.send(500, {'error_code':500, 'error': err });
+            }
+            return res.status(200).json({'error_code':200,'message':"succesfully saved"});
+        });
+
+    }
+  
+
+}}else{
+    Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
+       
+        if (err)  {console.log(err)
+           return  res.send(500, {'error_code':500, 'error': err });
+        }
+        return res.status(200).json({'error_code':200,'message':"succesfully saved"});
+    });
+}
+})
     
 
 

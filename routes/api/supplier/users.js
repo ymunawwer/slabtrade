@@ -73,4 +73,6 @@ router.post('/orderstatus',auth.checkToken,orderService.orderStatus);
 router.get('/getcustomer',auth.checkToken,registerCtrl.getUserName);
 router.get('/gerorder',auth.checkToken,orderService.getOrderDetail);
 
+router.get('/editProduct/:id',auth.checkToken,manageProduct.getProduct)
+
 module.exports = router;

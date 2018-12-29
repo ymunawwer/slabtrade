@@ -3,9 +3,11 @@ var cart = require('../../models/cart');
 var mongoose = require('mongoose');
 var user = require('../../models/user');
 var mail = require('../../services/mailService');
+var _ = require('lodash');
 
 const checkOut = async (req, res, next) => {
     console.log('checkout',req.body);
+    var map = new Map();
     
     var orderconfirm = {};
     let bundle = [
@@ -30,6 +32,50 @@ const checkOut = async (req, res, next) => {
             });
 
         } else if (doc !== null) {
+            // doc['bundle'].forEach(element => {
+            //     sup = JSON.stringify(element['supplier_id'])
+                
+            //     console.log("element",map.has(sup))
+                
+            //     if(map.has(sup)){
+                    
+            //     map.set(sup,map.get(sup)+element['quantity'])
+            
+            //     console.log(element['supplier_id'])
+            //     }else{
+            //         map.set(sup,element['quantity'])
+                    
+
+            //     }
+            //     console.log("map",map);
+            
+                
+            // });
+            // bool = true;
+            // iscontainerfull = true
+            // map.forEach((value,key)=>{
+            //     if(value%6 === 0){
+                    
+            //         console.log("Container is full.thank you")
+            //     }else if(value%6 !== 0){
+                    
+            //         if(bool){
+            //             res.status(200).json({
+            //                 "error_code":200,
+            //                 "message":"PLease add more Item.",
+            //                 "data":key
+            //             })
+            //             bool = false
+            //             iscontainerfull = false
+            //         }
+                    
+                    
+
+                    
+            //     }
+            // })
+
+          
 
             console.log(doc);
             // var remainder = Math.floor(doc.bundle.length % 6)
@@ -43,6 +89,7 @@ const checkOut = async (req, res, next) => {
             }
 
             if (container_size > 0 ) {
+
                 //check for the payment and if it is 1000 aur 1001 proceed
 
 
