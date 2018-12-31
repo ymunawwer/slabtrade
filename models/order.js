@@ -80,6 +80,13 @@ var orderSchema = new Schema({
     price:{
         type:Number
     },
+    purchase_order:[{
+        path:{
+        type:String
+        }
+
+
+    }],
     tax:{
         type:Number
     },

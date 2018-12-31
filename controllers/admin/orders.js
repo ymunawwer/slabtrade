@@ -50,6 +50,8 @@ const getProductDetail = async (req,res,next)=>{
 
 }
 
+
+
 const uploadWireDetail=async(req,res,next)=>{
     console.log(req.body)
     let docs = new Array();
@@ -92,7 +94,49 @@ const uploadWireDetail=async(req,res,next)=>{
     }
 
 
+    const uploadPurchaseOrder=async(req,res,next)=>{
+        console.log(req.body)
+        let docs = new Array();
+        if(req.files){
+            req.files.forEach(function(file){
+                
+                docs.push({'path':file.location});
+                    
+                });
+            
+         
+            Order.updateOne({'_id':mongoose.Types.ObjectId(req.body._id)},{$set:{'purchase_order':docs}},(err,result)=>{
+               
+                if(err){
+                    console.log(err)
+                    res.status(500).json({
+                        'error_code':500,
+                        'message':err
+                    })
+                }
+                else if(!err){
+                    console.log()
+                    if(result.nModified!==0){
+                        //To is admin email
+                        mailService.sendMailFunction('admin@slabtrade.com','Purchase order uploaded.','','<b>Hi</b><br>Ready for the shipment.<br><br><b>Thank You.</b>')
+                res.status(200).json({
+                    'error_code':200,
+                    'message':'Updated Succesfully'})
+                }
+                else if(result.nModified===0){
+                    res.status(200).json({
+                        'error_code':200,
+                        'message':'Order id is not valid.'})
+                    }
+                }
+            
+                
+            })
+        } 
+        }
+
+
 
 module.exports ={
-    fetchAllOrders,fetchAllPendingOrders,fetchAllApprovedOrders,getProductDetail,uploadWireDetail
+    fetchAllOrders,fetchAllPendingOrders,fetchAllApprovedOrders,getProductDetail,uploadWireDetail,uploadPurchaseOrder
 }

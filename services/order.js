@@ -356,6 +356,41 @@ getWiredDoc = async (req,res,next)=>{
 }
 
 
+getPurchaseOrder = async (req,res,next)=>{
+    Order.find({
+        '_id': req.query.id
+    }, function (err, result) {
+        if (err) {
+            res.status(500).json({
+                'error_code': 500,
+                'message': err
+            });
+        } else if (result.length === 0) {
+
+            res.status(200).json({
+                'error_code': 200,
+                'message': 'There is no product'
+            });
+        } else if (result.length > 0) {
+            let docs = []
+            
+            console.log(result)
+            // docs.push(result[0]['payment_status'])
+            // result[0]['purchase_order'].forEach((doc)=>{
+            //     console.log(doc)
+            //     docs.push(doc.path)
+            // })
+            res.status(200).send({"error_code":200,"data":result[0]['purchase_order']});
+            // console.log(obj)
+                        // res.attachment('Product_info.csv');
+            // res.status(200).send({"error_code":200,"data":docs});
+        }
+    })
+
+
+
+}
+
 
 
 
@@ -367,7 +402,7 @@ module.exports = {
     getallorderBySupplier,
     getallOrderByCustomer,
     getOrderDetail,getShippingDoc,
-    getWiredDoc
+    getWiredDoc,getPurchaseOrder
 
 }
 

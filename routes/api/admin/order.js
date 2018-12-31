@@ -17,6 +17,8 @@ router.get('/shippingdownload',orderService.getShippingDoc);
 //uploadWireDetail
 router.post('/uploadshippingdetail',bundleUpdate.wired_doc_upload.array('wired_file',7),orderCtrl.uploadWireDetail);
 
+router.post('/uploadpurchaseorder',bundleUpdate.wired_doc_upload.array('wired_file',1),orderCtrl.uploadPurchaseOrder);
+
 router.post('/orderstatus',orderService.orderStatus)
 
 router.get('/paymentstatusupdate',payment.updateStatus);
