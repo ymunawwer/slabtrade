@@ -166,14 +166,14 @@ const uploadShippingDetail=async(req,res,next)=>{
     }
 
 const getProduct = async(req,res,next)=>{
-    let product = await Product.findById(req.params.id).exec(function(err,data){
+    await Product.findById(req.params.id).exec(function(err,data){
         if(err){
             res.status(500).json({
                 "error_code":500,
                 "data":"Please check product ID"
             })
 
-        } else  if(data){
+        } else if(data){
             res.status(200).json({
                 "error_code":200,
                 "data":data

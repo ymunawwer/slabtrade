@@ -84,11 +84,11 @@ const checkOut = async (req, res, next) => {
             console.log(doc['total_quantity'])
             var container_size = Math.floor((doc['total_quantity'] - remainder) / 6);
 
-            if (remainder > 0 && container_size !== 0) {
-                container_size += 1;
-            }
+            // if (remainder > 0 && container_size !== 0) {
+            //     container_size += 1;
+            // }
 
-            if (container_size > 0 ) {
+            if (remainder === 0 ) {
 
                 //check for the payment and if it is 1000 aur 1001 proceed
 
