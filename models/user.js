@@ -156,10 +156,20 @@ class UserClass {
         if(phoneExist) throw new Error('Phone is already exist.');
         let accesstokens = [];
         let user;
-        let geo_coding = geo.geoCoding(address+city+state+country)
+        
+        let result = await new Promise((rs, rj) => {
+            geo.geoCoding(address+city+state+country, function (data, error) {
+                if (data) {
+                    rs(data);
+                } else {
+                    console.log(error);
+                }
+            })
+        });
+        console.log(result)
        
         roles = roles ? [roles] : ['user'];//,'lat':geo_coding['lat'],'lng':geo_coding['lng']
-        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload};
+        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload,'lat':result['lat'],'lng':result['lng']};
         console.log(user)
         user = await new this(user).save();
         
