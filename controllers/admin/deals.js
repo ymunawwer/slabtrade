@@ -27,7 +27,26 @@ const createDeal = async (req,res,next)=>{
 
 }
 
+const getDeal = async (req,res,next)=>{
+    deal.find({}).exec(function(err,data){
+        if(err){
+            res.status(500).json({
+                "error_code":500,
+                "message":"Please try again."
+            })
+
+        }else{
+            res.status(200).json({
+                "error_code":200,
+                "message":"OK",
+                "data":data
+            })
+        }
+    })
+}
+
 
 module.exports = {
-    createDeal
+    createDeal,
+    getDeal
 }
