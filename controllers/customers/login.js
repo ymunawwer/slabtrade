@@ -55,7 +55,12 @@ const login = async(req,res,next)=>{
         })
       
       }else{
-      res.redirect('/login');
+        return res.status(200).json({
+          "error_code":200,
+          "message":"Invalid input"
+          
+        })
+      // res.redirect('/login');
       }
    });
   })(req, res,next);

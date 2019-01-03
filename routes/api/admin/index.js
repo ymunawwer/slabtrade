@@ -5,6 +5,7 @@ var auth = require('../../../middlewares/auth')
 
 
 
+
 router.use('/user',
     require('./user'));
 
@@ -19,6 +20,10 @@ router.use('/port',
 
 router.use('/order',require('./order'));
 
+router.use('/report',require('./salesreport'))
 
+
+router.use('/deals',
+    require('./deals'));
 
 module.exports = router;

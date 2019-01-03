@@ -78,6 +78,7 @@ const updateProduct = async(req,res,next)=>{
         'no_of_slabs': req.body.no_of_slabs,
         'dimension': req.body.dimension,
         'net_weight': req.body.net_weight,
+        'Bundle_description':req.body.Bundle_description,
         'product_description': req.body.product_description,
         'inspection_report': req.body.inspection_report
     };

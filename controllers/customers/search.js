@@ -25,6 +25,7 @@ const firstPageProductwithprice = async (req,res,next)=>{
                 'message':'Something went wrong',
                 'data':err});
         }if(result.length!==0){
+        result[0]['docs']
         res.status(200).json({'error_code':200,'data':result});
         }else{
             res.status(200).json({'error_code':204,'message':'No item found'}); 
