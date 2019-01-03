@@ -117,7 +117,10 @@ class ProductClass{
         let bundleExist = await this.count({ bundle_number });
         if(bundleExist) throw new Error('Bundle is already exist.');
         console.log('dimension',typeof dimension)
-        dimension=JSON.parse(dimension);
+        if(typeof dimension !=='object'){
+            dimension=JSON.parse(dimension);
+        }
+        
         
         dimension.forEach((element,index) => {
             dimension[index]['thickness']=thickness;

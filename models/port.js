@@ -48,16 +48,22 @@ class PortClass{
 
     static async addPort(port_name,country,shipping_cost,port_cost,tax_percentage,facilities_cost){
         let port_id = port_name+Math.round(Math.random(100,999));
-        let geo_coding = await geo.geoCoding(port_name+country)
-        console.log("return",geo_coding)
-        let port
-        //,'lat':geo_coding['lat'],'lng':geo_coding['lng'] 
-        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage,'facilities_cost':facilities_cost};
+        
+ 
+       let geo_coding = geo.geoCoding(port_name+country)
+       console.log(typeof geo_coding)
+       geo_coding.then(function(val){
+        console.log("return",val)
+        let port//,'lat':geo_coding['lat'],'lng':geo_coding['lng']
+        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage,'facilities_cost':facilities_cost };
         console.log(port);
-        port = await new this(port).save();
+        port = new this(port).save();
         port = port.toObject();
 
         return port;
+
+       })
+
         
 
     }

@@ -159,14 +159,21 @@ let x ={
                 'lat':x['results'][0]['geometry']['bounds']['northeast']['lat'],
                 'lng':x['results'][0]['geometry']['bounds']['northeast']['lng']
             }
+            return new Promise(function(resolve, reject) {
+               
+                resolve(obj);
+              });
             // return obj
         }else{
             var obj = {
                 'lat':x['results'][0]['geometry']['location']['lat'],
                 'lng':x['results'][0]['geometry']['location']['lat']
             }
-            console.log(obj)
-            return obj;
+            // console.log(obj)
+            return new Promise(function(resolve, reject) {
+               
+                resolve(obj);
+              });
         
         }
     });
