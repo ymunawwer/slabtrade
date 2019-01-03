@@ -10,6 +10,7 @@ const addPort = async (req,res,next)=>{
         })
     }).catch((err)=>{
         if(err){
+            console.log(err)
             res.status(500).json({
                 'error_code':500,
                 'message':'Please try again.'
@@ -22,7 +23,7 @@ const addPort = async (req,res,next)=>{
 const updatePort = async (req,res,next)=>{
 
     
-    port.updatePort(req.body.data.port_id,req.body.data.port_name,req.body.data.country,req.body.data.shipping_cost,req.body.data.port_cost,req.body.data.tax_percentage,res);
+    port.updatePort(req.body.data.port_id,req.body.data.port_name,req.body.data.country,req.body.data.shipping_cost,req.body.data.port_cost,req.body.data.tax_percentage,res,req.body.lat   );
 
 
 

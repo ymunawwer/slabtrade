@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('../../../middlewares/auth')
-
+var geo = require('../../../services/geocoding')
 
 
 
@@ -9,6 +9,7 @@ var auth = require('../../../middlewares/auth')
 router.use('/user',
     require('./user'));
 
+router.get('/geo',geo.geoCoding)
 
 router.use('/customer',
     require('./customer_supplier'));

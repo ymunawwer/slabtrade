@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const geo = require('../services/geocoding');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
@@ -101,9 +102,14 @@ port:{
 },
 unload:{
     type:String
+},
+lat:{
+    type:Number
+},
+lng:{
+   type:Number
 }
-});
-
+})
 
 
 UserSchema.pre('save', function(next){ var user = this;
@@ -150,7 +156,9 @@ class UserClass {
         if(phoneExist) throw new Error('Phone is already exist.');
         let accesstokens = [];
         let user;
-        roles = roles ? [roles] : ['user'];
+        let geo_coding = geo.geoCoding(address+city+state+country)
+       
+        roles = roles ? [roles] : ['user'];//,'lat':geo_coding['lat'],'lng':geo_coding['lng']
         user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload};
         console.log(user)
         user = await new this(user).save();

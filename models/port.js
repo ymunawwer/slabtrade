@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const geo = require('../services/geocoding');
 const Schema = mongoose.Schema;
 
 const portSchema = new Schema({
@@ -34,6 +35,12 @@ const portSchema = new Schema({
     facilities_cost:{
         type:String,
         required:true
+    },
+    lat:{
+        type:Number
+    },
+    lng:{
+       type:Number
     }
 })
 
@@ -41,8 +48,11 @@ class PortClass{
 
     static async addPort(port_name,country,shipping_cost,port_cost,tax_percentage,facilities_cost){
         let port_id = port_name+Math.round(Math.random(100,999));
+        let geo_coding = await geo.geoCoding(port_name+country)
+        console.log("return",geo_coding)
         let port
-        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage,'facilities_cost':facilities_cost };
+        //,'lat':geo_coding['lat'],'lng':geo_coding['lng'] 
+        port = {'port_id':port_id,'port_name':port_name,'country':country,'shipping_cost':shipping_cost,'port_cost':port_cost,'tax_percentage':tax_percentage,'facilities_cost':facilities_cost};
         console.log(port);
         port = await new this(port).save();
         port = port.toObject();
@@ -58,6 +68,7 @@ class PortClass{
         this.findOneAndDelete({'port_id':port_id},function(err,result){
             
             if(err){
+                
                 res.status(500).json({
                     'error_code':500,
                     'message':'Process failed.Sorry for the inconvenience.'

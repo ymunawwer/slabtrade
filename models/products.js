@@ -95,16 +95,16 @@ const ProductSchema = new Schema({
     },
     offer_value:{
         type:Number,
-        required:true
+       
     },
     start_date:{
         type:Date,
         default: Date.now,
-        required:true
+       
     },
     end_date:{
         type:Date,
-        required:true
+  
 
     }
 

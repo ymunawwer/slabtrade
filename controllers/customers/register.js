@@ -1,6 +1,7 @@
 var user = require('../../models/user');
 var mail = require('../../services/mailService');
 var randomstring = require("randomstring");
+var geo = require('../../services/geocoding');
 const register = async(req,res,next)=>{
 console.log(req.body.data);
 
