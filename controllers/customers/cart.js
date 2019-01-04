@@ -69,7 +69,7 @@ const addToCart = async (req, res, next) => {
     Cart.find({'user_id':req.body.user_id}).exec(function(err,result){
         // console.log("length",res[0]['bundle'][res[0]['bundle'].length-1])
         // console.log("supplier id",req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,""));
-        if(result.length!==0){
+        if(result.length!==0 && typeof result['bundle'] !=='undefined'){
         if(req.body['bundle'][req.body['bundle'].length-1]['supplier_id']===JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"")){
   
          
