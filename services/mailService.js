@@ -14,8 +14,8 @@ const nodemailer = require('nodemailer');
             secure: false,          // Not SSL
             requireTLS: true,
             auth: {
-                user: 'yaseen.gamasome@gmail.com', // generated ethereal user
-                pass: 'hello@Gamasome2' // generated ethereal password
+                user: 'slabtrade.us@gmail.com', // generated ethereal user
+                pass: 'SlabTradeUs123' // generated ethereal password
             }
         });
         let mailOptions = {
@@ -52,8 +52,8 @@ const nodemailer = require('nodemailer');
             secure: false,          // Not SSL
             requireTLS: true,
             auth: {
-                user: 'yaseen.gamasome@gmail.com', // generated ethereal user
-                pass: 'hello@Gamasome2' // generated ethereal password
+                user: 'slabtrade.us@gmail.com', // generated ethereal user
+                pass: 'SlabTradeUs123' // generated ethereal password
             }
         });
         let mailOptions = {

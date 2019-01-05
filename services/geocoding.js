@@ -168,6 +168,9 @@ const geoCoding = async function (address, cb) {
 
             //     resolve(obj);
             //   });
+
+         
+
             return cb(obj);
         }
     });

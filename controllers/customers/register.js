@@ -21,6 +21,7 @@ var varuser = user.registerUser(req.body.alias,req.body.data.email,req.body.data
 
   res.status(200).json({'error_code':200,'message':"user register Succesfully"});
 }).catch(function(err){
+    console.log(err)
     mail.sendMailFunction(req.body.data.email,'Registration failed','Sorry for the inconvenience','<b>Hi,</b><br>Sorry for the inconvenience.<br><br><br><br>><b>Thank You.</b>');
     res.status(500).json({'error_code':500,'message':"user register Failed"});
 });
