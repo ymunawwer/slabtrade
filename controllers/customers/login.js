@@ -55,8 +55,8 @@ const login = async(req,res,next)=>{
         })
       
       }else{
-        return res.status(200).json({
-          "error_code":200,
+        return res.status(401).json({
+          "error_code":401,
           "message":"Invalid input"
           
         })
