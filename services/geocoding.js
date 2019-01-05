@@ -149,6 +149,7 @@ const geoCoding = async function (address, cb) {
             console.log('error:', error); // Print the error if one occurred and handle it
             console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
             console.log(body)
+            if(typeof body['results'][0] !=='undefined'){
             console.log(body['results'][0]['geometry']['bounds']['northeast']['lat'])
             console.log(body['results'][0]['geometry']['bounds']['northeast']['lng'])
 
@@ -156,6 +157,7 @@ const geoCoding = async function (address, cb) {
                 'lat': x['results'][0]['geometry']['bounds']['northeast']['lat'],
                 'lng': x['results'][0]['geometry']['bounds']['northeast']['lng']
             }
+        }
 
             // return obj
         } else {

@@ -30,7 +30,7 @@ var orderSchema = new Schema({
 
     products:[{
         supplier_id:{ type: Schema.Types.ObjectId, ref: 'supplier' },
-        bundle_id:{ type: String     },
+        bundle_id:{ type: String ,ref:'products'},
         dimension:[{
             width:{
                 type:Number

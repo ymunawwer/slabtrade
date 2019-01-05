@@ -60,7 +60,7 @@ const getOrderList = function(req,res,next){
                 let:{"bundle_id":"$bundle_id"},
 
                 pipeline: [
-                    { "$addFields": { "bundleId": { "$toObjectId": "$_id" }}},
+                    { "$addFields": { "bundleId":  "$bundle_number" }},
                     { "$match": { "$expr": { "$eq": [ "$bundleId", "$$bundle_id" ] } } }
                   ],
                   
@@ -70,7 +70,7 @@ const getOrderList = function(req,res,next){
         },{
             $unwind:({ path: "$bundle_info", preserveNullAndEmptyArrays: true })
         },
-        // {$project:{"bundle_info":{"_id":0}}}
+        {$project:{"bundle_info":{"_id":0}}}
 
         
 
