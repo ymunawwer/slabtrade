@@ -51,16 +51,16 @@ class PortClass {
 
 
         //let geo_coding = await geo.geoCoding(port_name+country);
-        let result = await new Promise((rs, rj) => {
-            geo.geoCoding(port_name + country, function (data, error) {
-                if (data) {
-                    rs(data);
-                } else {
-                    console.log(error);
-                }
-            })
-        });
-        console.log(result)
+        // let result = await new Promise((rs, rj) => {
+        //     geo.geoCoding(port_name + country, function (data, error) {
+        //         if (data) {
+        //             rs(data);
+        //         } else {
+        //             console.log(error);
+        //         }
+        //     })
+        // });
+        // console.log(result)
         
             // console.log("return", val)
             let port //,'lat':geo_coding['lat'],'lng':geo_coding['lng']
@@ -72,8 +72,8 @@ class PortClass {
                 'port_cost': port_cost,
                 'tax_percentage': tax_percentage,
                 'facilities_cost': facilities_cost,
-                'lat':result['lat'],
-                'lng':result['lng']
+                // 'lat':result['lat'],
+                // 'lng':result['lng']
             };
             console.log(port);
             port = new this(port).save();

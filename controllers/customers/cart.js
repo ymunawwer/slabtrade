@@ -1,6 +1,8 @@
 const Cart = require('../../models/cart');
 var Order = require('../../models/order');
 var mongoose = require('mongoose');
+const User = require('../../models/user');
+var Product = require('../../models/products')
 
 
 const deleteAllItemFromCart = async (req, res, next) => {
@@ -67,14 +69,17 @@ const addToCart = async (req, res, next) => {
         'total_quantity':req.body.total_quantity
     };
     console.log(typeof req.body.user_id);
-    Cart.find({'user_id':mongoose.Types.ObjectId(req.body.user_id)}).exec(function(err,result){
+    Cart.find({'user_id':mongoose.Types.ObjectId(req.body.user_id)}).exec(async function(err,result){
         // console.log("length",res[0]['bundle'][res[0]['bundle'].length-1])
         // console.log("supplier id",req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,""));
         if(result.length!==0){
-        if(req.body['bundle'][req.body['bundle'].length-1]['supplier_id']===JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"")){
+       newly_added_item_supplier_city = await User.find({'_id':req.body['bundle'][req.body['bundle'].length-1]['supplier_id']})
+       previously_added_item_supplier_city =await User.find({'_id':result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']})
+    //    console.log("city",newly_added_item_supplier_city[0]['city'],previously_added_item_supplier_city[0]['city'])
+    //     if(req.body['bundle'][req.body['bundle'].length-1]['supplier_id']===JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"")){
   
          
-
+if(newly_added_item_supplier_city[0]['city'].toLowerCase() === previously_added_item_supplier_city[0]['city'].toLowerCase()){
 
  
     Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
@@ -87,7 +92,22 @@ const addToCart = async (req, res, next) => {
 }
 else if( req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"") ){
     if(result[0]['total_quantity']%6!==0){
-        res.status(200).json({"error_code":200,"Message":"Please add more item to the container.","data":{"bundle_id":result[0]['bundle'][result[0]['bundle'].length-1]['bundle_id'],"bundle_name":result[0]['bundle'][result[0]['bundle'].length-1]['bundle_name'],"supplier_id":result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']}})
+        var supplier_id = []
+        await User.find({'city':previously_added_item_supplier_city[0]['city']}).exec((err,result)=>{
+            result.forEach(el=>{
+                supplier_id.push(new mongoose.Types.ObjectId(el['_id']));
+                console.log('el',el['_id'])
+            })
+            
+            // console.log('res',res)
+
+        })
+        setTimeout(async function(){
+        console.log('id',supplier_id)
+        let product =await Product.find({'supplier_id':{$in:supplier_id}})
+        console.log("prod",product)
+        res.status(200).json({"error_code":200,"Message":"Please add more item to the container.","data":product})
+        },5000)
     }else{
         Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
        
