@@ -76,7 +76,7 @@ class PortClass {
                 // 'lng':result['lng']
             };
             console.log(port);
-            port = new this(port).save();
+            port = await new this(port).save();
             port = port.toObject();
 
             return port;
