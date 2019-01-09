@@ -9,6 +9,7 @@ var manageProduct = require('../../../controllers/supplier/manageproduct');
 var managecsv = require('../../../controllers/supplier/managecsv');
 const orderService = require('../../../services/order');
 const auth = require('../../../middlewares/auth');
+const dealsCtrl = require('../../../controllers/supplier/deals')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -76,5 +77,8 @@ router.get('/getcustomer',auth.checkToken,registerCtrl.getUserName);
 router.get('/gerorder',auth.checkToken,orderService.getOrderDetail);
 
 router.get('/editProduct/:id',auth.checkToken,manageProduct.getProduct)
+
+router.post('/createdeal',dealsCtrl.createDeal);
+router.get('/getdeal',dealsCtrl.getDeal);
 
 module.exports = router;

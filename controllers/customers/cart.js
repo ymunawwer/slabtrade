@@ -79,6 +79,8 @@ const addToCart = async (req, res, next) => {
     //     if(req.body['bundle'][req.body['bundle'].length-1]['supplier_id']===JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"")){
   
          
+
+    
 if(newly_added_item_supplier_city[0]['city'].toLowerCase() === previously_added_item_supplier_city[0]['city'].toLowerCase()){
 
  

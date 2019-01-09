@@ -5,7 +5,7 @@ const DealSchema = new Schema(
     {
         product_type:{
             type:String,
-            required:true
+            
         },
         offer_value:{
             type:Number,
@@ -20,6 +20,13 @@ const DealSchema = new Schema(
             type:Date,
             required:true
 
+        },
+        supplier_id:{
+                type:String
+                
+            },
+        bundle_number:{
+            type:String
         }
 
     }
@@ -37,6 +44,30 @@ class DealsClass{
             'start_date':start_date,
             
             'end_date':end_date
+
+        }
+        // deals = await new this(deals).save();
+        deals = await this.updateOne({'product_type':product_type},deals,{upsert:true})
+        // deals = deals.toObject();
+
+        return deals;
+    
+    
+    
+    }
+    static async createDealBySupplier(product_type,offer_value,start_date,end_date,supplier_id){
+        
+        var deals = {
+            'bundle_number':bundle_number,
+
+            'offer_value':offer_value,
+
+            'start_date':start_date,
+            
+            'end_date':end_date,
+
+
+            'supplier_id':supplier_id
 
         }
         // deals = await new this(deals).save();

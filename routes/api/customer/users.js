@@ -44,6 +44,26 @@ router.post('/deletecart',auth.checkToken,cartCtrl.deleteAllItemFromCart);
 
 router.post('/sendMail',mail.sendMail)
 
+router.get('/searchbycity',customerController.searchByCity)
+
+
+
+router.get('/searchbycitywithoutprice',customerController.searchByCityWithoutPrice)
+
+//searchByRecentlyCreated searchByDealsWithoutPrice
+router.get('/recentlycreated',customerController.searchByRecentlyCreated)
+
+router.get('/recentlycreatedwithoutprice',customerController.searchByRecentlyCreatedwithoutPrice)
+
+router.get('/getdeals',customerController.searchByDeals)
+
+router.get('/getdealswithoutprice',customerController.searchByDealsWithoutPrice)
+
+router.get('/mostviewed',customerController.mostviewed)
+
+
+router.get('/mostviewedwithoutprice',customerController.mostViewedWithoutPrice)
+
 router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to create and update cart item
 
 router.get('/shippingdownload',orderService.getShippingDoc);

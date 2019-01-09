@@ -1,5 +1,6 @@
 const Product = require('../../models/products');
 const Order = require('../../models/order');
+const deals = require('../../models/deals');
 var mailService = require('../../services/mailService');
 var mongoose = require('mongoose');
 
@@ -8,13 +9,45 @@ const addProduct = async (req,res,next)=>{
     console.log(req.body)
     let images=new Array();
    if(req.files){
+
+    var deal = {
+        'bundle_number':req.body.bundle_number,
+
+        'offer_value':JSON.parse(req.body.offer_value),
+
+        'start_date':req.body.start_date,
+        
+        'end_date':req.body.end_date,
+
+
+        'supplier_id':req.body.supplier_id
+
+    }
+    // deals = await new this(deals).save();
+   deal = await deals.insertMany(deal)
+
+    
+
+
+
     req.files.forEach(function(image){
             images.push({'path':image.location});
             
         });
+        if(typeof req.body.offer_value === 'string'){
+            offer_value = JSON.parse(req.body.offer_value)
 
+        }else{
+            offer_value = req.body.offer_value
+        }
+        if(typeof req.body.isoffer === 'string'){
+            isoffer = JSON.parse(req.body.isoffer)
+
+        }else{
+            isoffer = req.body.isoffer
+        }
         console.log(req.body.dimension);
-        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type,req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report);
+        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type,req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report,offer_value,req.body.start_date,req.body.end_date,isoffer,req.body.preference);
         product.then(function(result){
             res.status(200).send(result);
         }).catch(function(err){
@@ -80,7 +113,12 @@ const updateProduct = async(req,res,next)=>{
         'net_weight': req.body.net_weight,
         'Bundle_description':req.body.Bundle_description,
         'product_description': req.body.product_description,
-        'inspection_report': req.body.inspection_report
+        'inspection_report': req.body.inspection_report,
+        'offer_value':req.body.offer_value,
+        'start_date':req.body.start_date,
+        'end_date':req.body.end_date,
+        'isoffer':req.body.isoffer,
+        'preference':req.body.preference
     };
 
     Product.findOneAndUpdate({'bundle_number':req.body.bundle_number},product_obj,function(err,result){

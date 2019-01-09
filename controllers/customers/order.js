@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var user = require('../../models/user');
 var mail = require('../../services/mailService');
 var _ = require('lodash');
+var products = require('../../models/products');
 
 const checkOut = async (req, res, next) => {
     console.log('checkout',req.body);
@@ -173,8 +174,14 @@ const checkOut = async (req, res, next) => {
                             mail.sendMailFunction(result.email,'Order placed successfuly','','<b>Hi</b><br>Thank you for shopping wit us.<br><br><br><b>Thank You</b>');
 
                         })
-                    }
-                        res.json({
+                    }   console.log(bundle)
+                    bundle.forEach(async el=>{
+                        console.log(el['bundle_id'])
+                        let product = await products.update({'bundle_number':el['bundle_id']},{$inc:{'trendy':1}})
+                    })
+                    
+                    
+                    res.json({
                             'error_code': 200,
                             'message': 'Order Placed Succesfully'
                         });
