@@ -13,7 +13,7 @@ const addProduct = async (req,res,next)=>{
     var deal = {
         'bundle_number':req.body.bundle_number,
 
-        'offer_value':JSON.parse(req.body.offer_value),
+        'offer_value':typeof req.body.offer_value ==='string'?JSON.parse(req.body.offer_value):req.body.offer_value,
 
         'start_date':req.body.start_date,
         
@@ -24,7 +24,10 @@ const addProduct = async (req,res,next)=>{
 
     }
     // deals = await new this(deals).save();
-   deal = await deals.insertMany(deal)
+    if(typeof req.body.isoffer!=='undefined' && (req.body.isoffer!=='0'||JSON.parse(req.body.isoffer)!==0)){
+        deal = await deals.insertMany(deal)
+    }
+   
 
     
 
