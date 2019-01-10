@@ -47,7 +47,7 @@ const addProduct = async (req,res,next)=>{
             isoffer = req.body.isoffer
         }
         console.log(req.body.dimension);
-        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type,req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report,offer_value,req.body.start_date,req.body.end_date,isoffer,req.body.preference);
+        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type.toLowerCase(),req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report,offer_value,req.body.start_date,req.body.end_date,isoffer,req.body.preference);
         product.then(function(result){
             res.status(200).send(result);
         }).catch(function(err){
@@ -100,7 +100,7 @@ const updateProduct = async(req,res,next)=>{
         'product_name': req.body.product_name,
         'supplier_id': req.body.supplier_id,
         'bundle_number': req.body.bundle_number,
-        'product_type': req.body.product_type,
+        'product_type': req.body.product_type.toLowerCase(),
         'product_type_code': req.body.product_type_code,
         'quality': req.body.quality,
         'price': req.body.price,

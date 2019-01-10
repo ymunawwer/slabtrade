@@ -19,7 +19,7 @@ const nodemailer = require('nodemailer');
             }
         });
         let mailOptions = {
-            from: '"SlabTrade 👻" <foo@example.com>', // sender address
+            from: '"SlabTrade 👻" <slabtrade.us@gmail.com>', // sender address
             to: req.body.to, // list of receivers
             subject: req.body.sub, // Subject line
             text: req.body.txt, // plain text body
@@ -57,7 +57,7 @@ const nodemailer = require('nodemailer');
             }
         });
         let mailOptions = {
-            from: '"SlabTrade 👻" <foo@example.com>', // sender address
+            from: '"SlabTrade 👻" <slabtrade.us@gmail.com>', // sender address
             to: to, // list of receivers
             subject: sub, // Subject line
             text: txt, // plain text body

@@ -15,7 +15,7 @@ const register = async(req,res,next)=>{
     
      varuser.then(function(){
         mail.sendMailFunction(req.body.data.email,'Waiting For confirmation','Thank you for registering with us.<br>we inform you once your account is approved by admin','<b>Hi,</b><br>Thank you for registering with us.<br>Password:'+pass+'<br><br>we inform you once your account is approved by admin.<br><br><br><br><b>Thank You.</b>');
-        mail.sendMailFunction('yaseen@gamasome.com','Supplier register','new Supplier register waiting for confirmation','<br><b>Hi,</b><br>new <b>Supplier</b> register waiting for confirmation.<br><br><br><br><br><br><b>Thank You.');
+        mail.sendMailFunction('slabtrade.us@gmail.com','Supplier register','new Supplier register waiting for confirmation','<br><b>Hi,</b><br>new <b>Supplier</b> register waiting for confirmation.<br><br><br><br><br><br><b>Thank You.');
     
       res.status(200).json({'error_code':200,'message':"Supplier register Succesfully"});
     }).catch(function(err){
