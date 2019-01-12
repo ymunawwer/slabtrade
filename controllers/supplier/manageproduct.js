@@ -56,7 +56,7 @@ const addProduct = async (req,res,next)=>{
             res.status(200).send(result);
         }).catch(function(err){
             console.log(err)
-            res.status(500).send("Bundle Upload Failed:\n"+err);
+            res.status(500).json({"message":"Bundle Upload Failed:\n","erro_code":500,"data":err});
         })
           
 
