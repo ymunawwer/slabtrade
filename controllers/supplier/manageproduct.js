@@ -10,21 +10,22 @@ const addProduct = async (req,res,next)=>{
     let images=new Array();
    if(req.files){
 
-    var deal = {
-        'bundle_number':req.body.bundle_number,
-
-        'offer_value':typeof req.body.offer_value ==='string'?JSON.parse(req.body.offer_value):req.body.offer_value,
-
-        'start_date':req.body.start_date,
-        
-        'end_date':req.body.end_date,
-
-
-        'supplier_id':req.body.supplier_id
-
-    }
+  
     // deals = await new this(deals).save();
     if(typeof req.body.isoffer!=='undefined' && (req.body.isoffer!=='0'||JSON.parse(req.body.isoffer)!==0)){
+        var deal = {
+            'bundle_number':req.body.bundle_number,
+    
+            'offer_value':typeof req.body.offer_value ==='string'?JSON.parse(req.body.offer_value):req.body.offer_value,
+    
+            'start_date':req.body.start_date,
+            
+            'end_date':req.body.end_date,
+    
+    
+            'supplier_id':req.body.supplier_id
+    
+        }
         deal = await deals.insertMany(deal)
     }
    
