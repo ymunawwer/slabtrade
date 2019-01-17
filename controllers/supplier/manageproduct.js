@@ -100,6 +100,7 @@ const updateProduct = async(req,res,next)=>{
         'unit':req.body.unit || 0
 
     }
+
     var product_obj = {
         'product_name': req.body.product_name,
         'supplier_id': req.body.supplier_id,

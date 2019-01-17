@@ -108,6 +108,9 @@ lat:{
 },
 lng:{
    type:Number
+},
+desc:{
+    type:String
 }
 })
 
@@ -148,7 +151,7 @@ class UserClass {
 
     }
 
-    static async registerUser(alias,email,first_name, last_name,middle_name,password, home_phone,work_phone,cell_phone,account_type, address,city,state,country, zip, roles,mailing_address,mailing_city,mailing_state,mailing_country,mailing_zip,port,unload) {
+    static async registerUser(alias,email,first_name, last_name,middle_name,password, home_phone,work_phone,cell_phone,account_type, address,city,state,country, zip, roles,mailing_address,mailing_city,mailing_state,mailing_country,mailing_zip,port,unload,desc) {
         email = email.toLowerCase();
         let userExist = await this.count({ email });
         if(userExist) throw new Error('Email is already exist.');
@@ -156,7 +159,8 @@ class UserClass {
         if(phoneExist) throw new Error('Phone is already exist.');
         let accesstokens = [];
         let user;
-        
+        console.log(desc)
+        console.log(typeof desc)
         // let result = await new Promise((rs, rj) => {
         //     geo.geoCoding(address+city+state+country, function (data, error) {
         //         if (data) {
@@ -167,9 +171,12 @@ class UserClass {
         //     })
         // });
         // console.log(result)
+        if(typeof desc ==='undefined'){
+            desc = "DESCRIPTION NOT AVAILABLE"
+        }
        
         roles = roles ? [roles] : ['user'];//,'lat':geo_coding['lat'],'lng':geo_coding['lng']
-        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload};//'lat':result['lat'],'lng':result['lng']};
+        user = {'alias':alias,'email':email,'first_name':first_name,'last_name':last_name,'middle_name':middle_name,'password':password, 'home_phone':home_phone,'work_phone':work_phone,'cell_phone':cell_phone,'account_type':account_type, 'address':address,'city':city,'state':state,'country':country, 'zip_code':zip, 'roles':roles,'mailing_address':mailing_address,'mailing_city':mailing_city,'mailing_state':mailing_state,'mailing_country':mailing_country,'mailing_zip':mailing_zip,'port':port,'unload':unload,'desc':desc};//'lat':result['lat'],'lng':result['lng']};
         console.log(user)
         user = await new this(user).save();
         

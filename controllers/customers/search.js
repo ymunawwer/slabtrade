@@ -203,6 +203,17 @@ const searchQuery = async (req,res,next)=>{
 
 
 const getAllProduct=async(req,res,next)=>{
+    // console.log(req.query.supplier_id)
+    // supplierId = []
+    // newly_added_item_supplier_city = await User.find({'_id':req.query.supplier_id})
+    // await User.find({'city':newly_added_item_supplier_city[0]['city']}).exec((err,result)=>{
+    //     result.forEach(el=>{
+    //         supplierId.push(new mongoose.Types.ObjectId(el['_id']));
+    //         console.log('el',el['_id'])
+    //     })
+    // })
+    // console.log(newly_added_item_supplier_city)
+
     products.find({'supplier_id':req.query.supplier_id}).exec((err,result)=>{
         if(err){
             res.status(500).json({
