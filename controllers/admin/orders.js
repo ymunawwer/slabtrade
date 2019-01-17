@@ -3,6 +3,7 @@ var products =  require('../../models/products');
 var Order = require('../../models/order');
 var mongoose = require('mongoose');
 var mailService = require('../../services/mailService')
+var User = require('../../models/user')
 
 
 
@@ -31,6 +32,8 @@ const fetchAllApprovedOrders = async (req,res,next)=>{
 }
 
 const getProductDetail = async (req,res,next)=>{
+  
+
   await products.find({'bundle_number':req.query.bundle_number}).exec((err,resul)=>{
 
       if(err){
@@ -39,6 +42,7 @@ const getProductDetail = async (req,res,next)=>{
               'message':'please try again later'
           })
       }else{
+        //   resul resul.push()
         res.status(200).json({
             'error_code':200,
             'data':resul
