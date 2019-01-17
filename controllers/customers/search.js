@@ -203,6 +203,8 @@ const searchQuery = async (req,res,next)=>{
 
 
 const getAllProduct=async(req,res,next)=>{
+    console.log('header',JSON.stringify(req.headers['auth']))
+    if(typeof req.headers['auth'] !=='undefined'){
     console.log(req.query.supplier_id)
      var supplierId = []
     newly_added_item_supplier_city = await User.find({'_id':req.query.supplier_id})
@@ -227,7 +229,36 @@ const getAllProduct=async(req,res,next)=>{
         })
 
     },2000)
- 
+}else if(typeof req.headers['auth'] ==='undefined'){
+    console.log(req.query.supplier_id)
+    var supplierId = []
+   newly_added_item_supplier_city = await User.find({'_id':req.query.supplier_id})
+   await User.find({'city':newly_added_item_supplier_city[0]['city']}).exec((err,result)=>{
+       result.forEach(el=>{
+           supplierId.push(new mongoose.Types.ObjectId(el['_id']));
+           console.log('el',el['_id'])
+       })
+   })
+   console.log(newly_added_item_supplier_city)
+   console.log(supplierId)
+   setTimeout(function(){
+       products.find({'supplier_id':{$in:supplierId}}).exec((err,result)=>{
+           if(err){
+               res.status(500).json({
+                   'error_code':500,
+                   'message':err})
+           }else{
+            for(y in result){
+                result[y]['price'] = undefined
+            }
+               console.log(result)
+           res.status(200).json({'error_code':200,'data':result})
+           }
+       })
+
+   },2000)
+
+}
 }
 
 

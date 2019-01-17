@@ -2,7 +2,7 @@ const deal = require('../../models/deals');
 const product = require('../../models/products');
 const createDeal = async (req,res,next)=>{
     console.log(req.body)
-   obj = deal.createDealBySupplier(req.body.product_type,req.body.offer_value,req.body.start_date,req.body.end_date,req.body.supplier_id);
+   obj = deal.createDealBySupplier(req.body.first_name,req.body.product_type,req.body.offer_value,req.body.start_date,req.body.end_date,req.body.supplier_id);
    obj.then(function(){
     res.status(200).json({'error_code':200,'message':"deals created Succesfully"});
     product.find({}).exec(function(err,data){

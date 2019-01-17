@@ -27,6 +27,10 @@ const DealSchema = new Schema(
             },
         bundle_number:{
             type:String
+        },
+        first_name:{
+            type:String
+
         }
 
     }
@@ -37,6 +41,8 @@ class DealsClass{
     static async createDeal(product_type,offer_value,start_date,end_date){
         
         var deals = {
+            
+
             'product_type':product_type,
 
             'offer_value':offer_value,
@@ -55,9 +61,11 @@ class DealsClass{
     
     
     }
-    static async createDealBySupplier(product_type,offer_value,start_date,end_date,supplier_id){
+    static async createDealBySupplier(first_name,product_type,offer_value,start_date,end_date,supplier_id){
         
         var deals = {
+            'first_name':first_name,
+            
             'bundle_number':bundle_number,
 
             'offer_value':offer_value,
