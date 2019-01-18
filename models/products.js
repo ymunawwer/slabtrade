@@ -56,7 +56,7 @@ const ProductSchema = new Schema({
     },
     color:{
         type:String,
-        required:true
+   
     },
     net_dimension:[{
         width:{
@@ -83,11 +83,11 @@ const ProductSchema = new Schema({
     },
     product_description:{
         type:String,
-        required:true
+      
     },
     Bundle_description:{
         type:String,
-        required:true
+     
     },
     inspection_report:{
         type:String,
