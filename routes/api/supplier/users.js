@@ -10,6 +10,7 @@ var managecsv = require('../../../controllers/supplier/managecsv');
 const orderService = require('../../../services/order');
 const auth = require('../../../middlewares/auth');
 const dealsCtrl = require('../../../controllers/supplier/deals')
+const dashboardCtrl = require('../../../controllers/supplier/dashboard')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -68,15 +69,19 @@ router.get('/csvdownload',managecsv.downloadCsv);//,auth.checkToken
 
 router.get('/downloadwireddoc',orderService.getWiredDoc);
 
+router.get('/dashboard',dashboardCtrl.dashboard);
+
 router.get('/downloadpurchaseorder',orderService.getPurchaseOrder);
 
 router.post('/uploadBulkProduct',bundleUpdate.bulk_update.array('product_csv',1),managecsv.uploadCsv);
 
 router.post('/orderstatus',auth.checkToken,orderService.orderStatus);
 router.get('/getcustomer',auth.checkToken,registerCtrl.getUserName);
-router.get('/gerorder',auth.checkToken,orderService.getOrderDetail);
+router.get('/getorder',auth.checkToken,orderService.getOrderDetail);
 
 router.get('/editProduct/:id',auth.checkToken,manageProduct.getProduct)
+
+router.get('/orderdetail/:id',auth.checkToken,orderService.getOrderById)
 
 router.post('/createdeal',dealsCtrl.createDeal);
 router.get('/getdeal',dealsCtrl.getDeal);

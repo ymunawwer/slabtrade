@@ -356,6 +356,18 @@ getWiredDoc = async (req,res,next)=>{
 }
 
 
+getOrderById = async(req,res,next)=>{
+    try{
+        let order = await Order.find({'_id':req.params.id});
+        res.status(200).json({"error_code":200,"data":order})
+    }catch(err){
+        res.status(500).json({"error_code":500,"message":"Please try again","data":err})
+
+    }
+
+}
+
+
 getPurchaseOrder = async (req,res,next)=>{
     Order.find({
         '_id': req.query.id
@@ -402,7 +414,8 @@ module.exports = {
     getallorderBySupplier,
     getallOrderByCustomer,
     getOrderDetail,getShippingDoc,
-    getWiredDoc,getPurchaseOrder
+    getWiredDoc,getPurchaseOrder,
+    getOrderById
 
 }
 
