@@ -13,6 +13,9 @@ const mail = require('../../../services/mailService');
 const orderCtrl = require('../../../controllers/customers/order');
 const orderService = require('../../../services/order')
 const portService = require('../../../services/port');
+const requestslabCtrl = require('../../../controllers/customers/requestslab')
+const cartnewCtrl = require('../../../controllers/customers/cartnew');
+const wishlistCtrl = require('../../../controllers/customers/wishlist')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -66,6 +69,8 @@ router.get('/mostviewedwithoutprice',customerController.mostViewedWithoutPrice)
 
 router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to create and update cart item
 
+// router.post('/addtocart',auth.checkToken,cartnewCtrl.addToCart);
+
 router.get('/shippingdownload',orderService.getShippingDoc);
 
 router.post('/recalculate',auth.checkToken,cartCtrl.itemRemove)
@@ -90,6 +95,13 @@ router.get('/allorder',auth.checkToken,orderService.getallOrderByCustomer)
 router.get('/getsimilarproduct',customerController.getAllProduct);
 
 router.get('/getorder',auth.checkToken,orderService.getOrderDetail);
+router.post('/createrequest',requestslabCtrl.create_request);
+
+router.get('/containerbyid',auth.checkToken,cartCtrl.getCartItemByContainerId);
+router.get('/removecontainerbyid',auth.checkToken,cartCtrl.removeContainer);
+
+router.get('/wishlist',auth.checkToken,wishlistCtrl.addToFav);
+router.get('/removefromwishlist',auth.checkToken,wishlistCtrl.removeFromFav);
 
 
 module.exports = router;

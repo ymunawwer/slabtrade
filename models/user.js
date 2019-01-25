@@ -111,7 +111,13 @@ lng:{
 },
 desc:{
     type:String
+},
+verification_mode:{
+    type:String,
+    default:'auto'
+    
 }
+
 })
 
 

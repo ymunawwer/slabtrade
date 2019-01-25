@@ -16,9 +16,24 @@ const checkOut = async (req, res, next) => {
     ];
     try{
     console.log("checkout")
-   await cart.findOne({
-        'user_id': req.body.user_id
-    }).exec(async function (err, doc) {
+    // await cart.findOne({
+    //     'user_id': req.body.user_id
+    // }).exec(async function (err,doc)
+
+
+  cart.aggregate([
+        {$match: {'container._id': mongoose.Types.ObjectId(req.body.container_id)}},
+        {$project: {
+            _id:0,
+            
+               container: {$filter: {
+                   input: '$container',
+                   as: 'container',
+                   cond: {$eq: ['$$container._id', mongoose.Types.ObjectId(req.body.container_id)]}
+               }},
+              
+           }}
+        ]).exec(async function(err, doc) {
         if (err) {
             res.status(500).json({
                 'error_code': 500,
@@ -78,13 +93,18 @@ const checkOut = async (req, res, next) => {
 
           
 
-            console.log(doc);
+            console.log('doc',JSON.stringify(doc[0]));
             // var remainder = Math.floor(doc.bundle.length % 6)
-            var remainder = Math.floor(doc['total_quantity'] % 6)
+           //old
+            // var remainder = Math.floor(doc['total_quantity'] % 6)
+            var remainder = Math.floor(doc[0]['container'][0]['total_quantity'] % 6)
+            console.log('remainder',remainder)
             // var container_size = Math.floor((doc.bundle.length - remainder) / 6);
             console.log(doc['total_quantity'])
-            var container_size = Math.floor((doc['total_quantity'] - remainder) / 6);
-
+            //old
+            // var container_size = Math.floor((doc['total_quantity'] - remainder) / 6);
+            var container_size = Math.floor((doc[0]['container'][0]['total_quantity'] - remainder) / 6);
+            console.log('container_size',container_size)
             // if (remainder > 0 && container_size !== 0) {
             //     container_size += 1;
             // }
@@ -95,8 +115,8 @@ const checkOut = async (req, res, next) => {
 
 
                 var i = 0;
-                for (let items of doc.bundle) {
-                    
+                //for (let items of doc.bundle) {
+                    for (let items of doc[0]['container'][0]['bundle']) {  
                     var dimensionArray = [];
                     for (dimension of items.Dimension) {
                         
@@ -127,7 +147,7 @@ const checkOut = async (req, res, next) => {
 
 
                 orderconfirm = {
-                    'user_id': doc.user_id,
+                    'user_id': req.body.user_id,
                     
                     'name':req.body.name,
                     'cancel_status': "Pending",
@@ -152,9 +172,11 @@ const checkOut = async (req, res, next) => {
                         })
                     }
                    else{
-                    cart.findOneAndDelete({
-                        'user_id': req.body.user_id
-                    }, (err, result) => {
+                    // cart.findOneAndDelete({
+                    //     'user_id': req.body.user_id
+                    // }, (err, result) => {
+                        cart.update({},  { $pull: { container: { _id: mongoose.Types.ObjectId(req.body.container_id) } } },{ multi: true},(err,result)=>{
+                            console.log('delete',result)
                         if (err) {
                             console.log(err)
                             res.status(500).json({

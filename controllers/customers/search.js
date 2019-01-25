@@ -6,7 +6,7 @@ const firstPageProductwithprice = async (req,res,next)=>{
     let typeArray = [];
     
     products.aggregate([
-        { '$match' : { 'product_type_code': {'$gte':1,'$lte':3}  } },
+        { '$match' : {$and:[{ 'product_type_code': {'$gte':1,'$lte':3}  },{'verification':1}]} },
         {       
             '$group': {
                 '_id': '$product_type',
@@ -44,7 +44,7 @@ const searchQuerywithprice = async (req,res,next)=>{
     var perpage = 10;
     var page = Math.max(0, req.query.page);
     if(req.query.type==='producttype'){
-    products.find({'product_type':req.query.id}).limit(perpage).skip(page).exec(function(err,result){
+    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
       if(err){  res.status(500).json({
             'error_code':500,
             'message':'Something went wrong',
@@ -59,7 +59,7 @@ const searchQuerywithprice = async (req,res,next)=>{
       })
     }else if(req.query.type==='color'){
         let color = '#'+req.query.id;
-        products.find({'color':color}).limit(perpage).skip(page).exec(function(err,result){
+        products.find({$and:[{'color':color},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
             if(err){  res.status(500).json({
                 'error_code':500,
                 'message':'Something went wrong',
@@ -87,7 +87,7 @@ const firstPageProduct = async (req,res,next)=>{
     let typeArray = [];
     products.aggregate([
         
-        { '$match' : { 'product_type_code': {'$gte':1,'$lte':3}  } },
+        { '$match' : {$and:[{ 'product_type_code': {'$gte':1,'$lte':3}},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
@@ -134,7 +134,7 @@ const searchQuery = async (req,res,next)=>{
     var perpage = 10;
     var page = Math.max(0, req.query.page);
     if(req.query.type==='producttype'){
-    products.find({'product_type':req.query.id}).limit(perpage).skip(page).exec(function(err,result){
+    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
             'message':'Something went wrong',
@@ -163,7 +163,7 @@ const searchQuery = async (req,res,next)=>{
     }else if(req.query.type==='color'){
         let color = '#'+req.query.id;
     
-        products.find({'color':color}).limit(perpage).skip(page).exec(function(err,result){
+        products.find({$and:[{'color':color},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
             if(err){  res.status(500).json({
                 'error_code':500,
                 'message':'Something went wrong',
@@ -217,7 +217,7 @@ const getAllProduct=async(req,res,next)=>{
     console.log(newly_added_item_supplier_city)
     console.log(supplierId)
     setTimeout(function(){
-        products.find({'supplier_id':{$in:supplierId}}).exec((err,result)=>{
+        products.find({$and:[{'supplier_id':{$in:supplierId}},{'verification':1}]}).exec((err,result)=>{
             if(err){
                 res.status(500).json({
                     'error_code':500,
@@ -242,7 +242,7 @@ const getAllProduct=async(req,res,next)=>{
    console.log(newly_added_item_supplier_city)
    console.log(supplierId)
    setTimeout(function(){
-       products.find({'supplier_id':{$in:supplierId}}).exec((err,result)=>{
+       products.find({$and:[{'supplier_id':{$in:supplierId}},{'verification':1}]}).exec((err,result)=>{
            if(err){
                res.status(500).json({
                    'error_code':500,
@@ -280,7 +280,7 @@ const searchByCity=async(req,res,next)=>{
     setTimeout(async function(){
 
         products.aggregate([
-            { '$match' : {'supplier_id':{$in:supplier_id}} },
+            { '$match' : {$and:[{'supplier_id':{$in:supplier_id}},{'verification':1}]} },
             {       
                 '$group': {
                     '_id': '$product_type',
@@ -346,7 +346,7 @@ const searchByCityWithoutPrice=async(req,res,next)=>{
 
    
     products.aggregate([
-        { '$match' : {'supplier_id':{$in:supplier_id}} },
+        { '$match' : {$and:[{'supplier_id':{$in:supplier_id}},{'verification':1}]} },
         {       
             '$group': {
                 '_id': '$product_type',
@@ -404,7 +404,7 @@ const searchByRecentlyCreated=async(req,res,next)=>{
     let today_dates = Date.now();
 
     products.aggregate([
-        { '$match' : {'created_at':{$gte:moments(today_dates).subtract(7, "days").toDate()}  } },
+        { '$match' : {$and:[{'created_at':{$gte:moments(today_dates).subtract(7, "days").toDate()}  },{'verification':1}]} },
         {       
             '$group': {
                 '_id': '$product_type',
@@ -470,7 +470,7 @@ const searchByRecentlyCreatedwithoutPrice=async(req,res,next)=>{
     let today_dates = Date.now();
 
     products.aggregate([
-        { '$match' : {'created_at':{$gte:moments(today_dates).subtract(7, "days").toDate()}  } },
+        { '$match' : {$and:[{'created_at':{$gte:moments(today_dates).subtract(7, "days").toDate()}  },{'verification':1}]} },
         {       
             '$group': {
                 '_id': '$product_type',
@@ -544,7 +544,7 @@ const searchByRecentlyCreatedwithoutPrice=async(req,res,next)=>{
 const searchByDeals=async(req,res,next)=>{
 
     products.aggregate([
-        { '$match' : { 'isoffer': {'$eq':1}  } },
+        { '$match' : {$and:[{ 'isoffer': {'$eq':1}  },{'verification':1}]} },
         {       
             '$group': {
                 '_id': '$product_type',
@@ -604,7 +604,7 @@ const searchByDeals=async(req,res,next)=>{
 const searchByDealsWithoutPrice=async(req,res,next)=>{
 
     products.aggregate([
-        { '$match' : { 'isoffer': {'$eq':1}  } },
+        { '$match' : {$and:[{ 'isoffer': {'$eq':1}  },{'verification':1} ]}},
         {       
             '$group': {
                 '_id': '$product_type',
@@ -724,7 +724,7 @@ if(typeof req.headers['auth'] !=='undefined'){
 
 const mostviewed=async(req,res,next)=>{
     products.aggregate([
-        { '$match' : { 'trendy': {'$gte':1}  } },
+        { '$match' : {$and:[{ 'trendy': {'$gte':1}  },{'verification':1} ]}},
         {       
             '$group': {
                 '_id': '$product_type',
@@ -783,7 +783,7 @@ const mostviewed=async(req,res,next)=>{
 }
     const mostViewedWithoutPrice=async(req,res,next)=>{
         products.aggregate([
-            { '$match' : { 'trendy': {'$gte':1}  } },
+            { '$match' : {$and:[{ 'trendy': {'$gte':1}  },{'verification':1} ]}},
             {       
                 '$group': {
                     '_id': '$product_type',

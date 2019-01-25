@@ -7,7 +7,23 @@ const CartSchema = new Schema({
         required:true,
         unique:true
     },
-    
+    container:[{
+        container_no:{
+            type:Number
+        },
+        city:{
+            type:String
+        },
+        total_bundle:{
+            type:Number
+        },
+        total_cost:{
+            type:Number
+        },
+        container_full:{
+            type:Number,
+            default:0
+        },
     bundle:[{
         
         bundle_id:{
@@ -54,6 +70,9 @@ const CartSchema = new Schema({
             total:{
                 type:Number,
                 required:true
+            },
+            container_no:{
+                type:Number
             }
             
     
@@ -86,6 +105,7 @@ const CartSchema = new Schema({
         default:0,
         required:true
     }
+}]
 
 })
 

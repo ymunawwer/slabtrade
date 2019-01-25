@@ -27,4 +27,8 @@ router.use('/report',require('./salesreport'))
 router.use('/deals',
     require('./deals'));
 
+
+router.use('/request',
+    require('./slab_request'));
+
 module.exports = router;

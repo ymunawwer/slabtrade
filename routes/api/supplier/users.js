@@ -58,7 +58,7 @@ router.get('/removeproduct',auth.checkToken,manageProduct.removeProduct);
 
 
 
-router.post('/update',auth.checkToken,bundleUpdate.upload.array('image',5),manageProduct.updateProduct);
+router.post('/update',bundleUpdate.upload.array('image',5),manageProduct.updateProduct);
 
 router.post('/uploadshippingdetail',bundleUpdate.shipment_upload.array('shipping_file',7),manageProduct.uploadShippingDetail)
 
@@ -85,5 +85,7 @@ router.get('/orderdetail/:id',auth.checkToken,orderService.getOrderById)
 
 router.post('/createdeal',dealsCtrl.createDeal);
 router.get('/getdeal',dealsCtrl.getDeal);
+
+
 
 module.exports = router;
