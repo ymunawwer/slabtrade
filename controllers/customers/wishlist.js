@@ -3,13 +3,15 @@ const mongoose = require('mongoose')
 
 const addToFav = async (req, res, next) => {
 
-    Product.findOneAndUpdate({'bundle_number':req.query.bundle_number},{$push:{'wishlist':mongoose.Types.ObjectId(req.query.user_id)}}).exec(function(err,result){
+    Product.findOneAndUpdate({'bundle_number':req.query.bundle_number},{$push:{'wishlist':req.query.user_id}}).exec(function(err,result){
 if(err){
+    console.log(err)
     res.status(500).json({"error_code":500,
                         "message":"Please try again later.Something went Wrong."})
-}
+}else{
 res.status(200).json({"error_code":200,
 "message":"Item Saved As favourite."})
+}
     })
 
 
@@ -18,7 +20,7 @@ res.status(200).json({"error_code":200,
 
 const removeFromFav = async (req, res, next) => {
 
-    Product.findOneAndUpdate({'bundle_number':req.query.bundle_number},{$pull:{'wishlist':mongoose.Types.ObjectId(req.query.user_id)}}).exec(function(err,result){
+    Product.findOneAndUpdate({'bundle_number':req.query.bundle_number},{$pull:{'wishlist':req.query.user_id}}).exec(function(err,result){
 if(err){
     res.status(500).json({"error_code":500,
                         "message":"Please try again later.Something went Wrong."})
