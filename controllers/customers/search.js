@@ -490,7 +490,7 @@ const searchByRecentlyCreatedwithoutPrice=async(req,res,next)=>{
                 'error_code':500,
                 'message':'Something went wrong',
                 'data':err});
-        }if(result.length!==0){
+        }if(result.length!==0 && typeof result!=='undefined'){
             for( y in result){
                 for(x in result[y].docs){
                  
