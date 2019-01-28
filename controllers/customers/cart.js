@@ -87,6 +87,7 @@ if(err){
 }
  
 
+
 const itemRemove = async (req,res,next) =>{
     console.log(req.body);
     Cart.updateOne({'user_id':mongoose.Types.ObjectId(req.body.id)},{$set:{"cart_total":req.body.cart_total,"tax":req.body.tax,"total_amount":req.body.total_amount,"total_quantity":req.body.total_quantity}}, function(err, doc){
@@ -325,15 +326,62 @@ const allItemInCart = async (req, res, next) => {
 }
 
 const removeBundle = async (req,res,next)=>{
-    Cart.update({},  { $pull: { bundle: { _id: mongoose.Types.ObjectId(req.query.bundle) } } },{ multi: true},(err,doc)=>{
-        if(err){
-            console.log("error",err)
-            res.status(200).json({"error_code":500,"message":"Please try again","data":err})
 
-        }else{
-            res.status(200).json({"error_code":200,"message":"Removed","data":doc})
+
+    Cart.aggregate([
+        {$match: {'container.bundle._id': mongoose.Types.ObjectId(req.query.id)}},
+        {$project: {
+            _id:0,
+            
+               container: {$filter: {
+                   input: '$container',
+                   as: 'container',
+                   cond: {$eq: ['$$container.bundle._id', mongoose.Types.ObjectId(req.query.id)]}
+               }},
+              
+           }}
+        ]).exec(function(err,cart_item_result){
+            
+if(err){
+
+}else{
+
+
+
+    Cart.update({},  { $pull: { container: {bundle:{_id: req.query.id} }}},async (err,result)=>{
+        if (result) {
+            console.log(result)
+            let cart = await Cart.find({'user_id':req.query.user_id});
+            // console.log(req.query.user_id,cart,cart[0]['container'].length)
+            // if(cart[0]['container'].length===0){
+            //     Cart.findOneAndDelete({ 'user_id': req.query.user_id }).exec(function(){
+            //         console.log('No container left.')
+            //     })
+            // }
+//             cart_item_result[0]['container'][0]['bundle'].forEach(function(ress){
+//                 Product.findOneAndUpdate({'bundle_number':ress['bundle_id']},{$inc:{no_of_slabs:ress['quantity']}}).exec(function(err,res){
+// if(err){
+
+// }
+//                 })
+//             })
+            // console.log('container item',cart_item_result[0]['container'])
+            
+            console.log('cart is clear');
+            return res.status(200).json({'error_code':200,'message':'Container is removed.'});
         }
-    });
+        else if(err) {
+            console.log('error',err);
+            return res.status(503).json({'error_code':503,'message':'try after some time'});
+            
+        }
+        else {
+            return res.status(200).json({"error_code":200,"message":"Container Not found"});
+        }
+    
+})}
+        })
+
         
     
     

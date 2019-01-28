@@ -30,8 +30,10 @@ const login = async(req,res,next)=>{
           if(result.roles[0]==='customer'){
             cart.find({'user_id':result._id}).exec(function(err,result_cart){
               if(result_cart[0]!==undefined){
+                
                 console.log('container item',result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity'])
               // result['total_quantity']=result_cart[0].total_quantity;
+              // if(typeof result_cart[0]['container'][result_cart[0]['container'].length-1]!=='undefined'){
               let user_detail = {'user_detail':result,'user':user}
               if(result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']!==6){
                 user_detail['total_quantity']=result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']

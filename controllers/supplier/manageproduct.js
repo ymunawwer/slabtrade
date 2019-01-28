@@ -144,7 +144,8 @@ const updateProduct = async(req,res,next)=>{
     }
     //product detail 
     let product_det = await Product.find({'bundle_number': req.body.bundle_number})
-    // console.log(product_det[0]['images'])
+    // console.log(req.body.bundle_number)
+    // console.log(product_det[0])
     var p_image_arr = product_det[0]['images']
     if(typeof product_det[0]!=='undefined' && typeof product_det[0]['images']!=='undefined'){
        var j = 0;
@@ -179,6 +180,7 @@ const updateProduct = async(req,res,next)=>{
         }else if(req.body.offer_value==='0' || req.body.offer_value==='null'){
             is_offer_value = 0
         }
+        console.log('dimension type',typeof req.body.dimension)
 
     var product_obj = {
         'product_name': req.body.product_name,
@@ -194,7 +196,7 @@ const updateProduct = async(req,res,next)=>{
         'slab_weight': req.body.slab_weight,
         'bundle_number': req.body.bundle_number,
         'no_of_slabs': req.body.no_of_slabs,
-        'dimension': JSON.parse(req.body.dimension),
+        'dimension': typeof req.body.dimension!=='object'?JSON.parse(req.body.dimension):req.body.dimension,
         'net_weight': req.body.net_weight,
         'Bundle_description':req.body.Bundle_description,
         'product_description': req.body.product_description,

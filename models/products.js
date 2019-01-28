@@ -89,10 +89,10 @@ const ProductSchema = new Schema({
         type:String,
      
     },
-    inspection_report:{
+    inspection_report:[{
         type:String,
         required:true
-    },
+    }],
     isoffer:{
         type:Number
     },

@@ -99,6 +99,7 @@ router.post('/createrequest',requestslabCtrl.create_request);
 
 router.get('/containerbyid',auth.checkToken,cartCtrl.getCartItemByContainerId);
 router.get('/removecontainerbyid',auth.checkToken,cartCtrl.removeContainer);
+router.get('/removebundlebyid',auth.checkToken,cartCtrl.removeBundle);
 
 router.get('/wishlist',auth.checkToken,wishlistCtrl.addToFav);
 router.get('/removefromwishlist',auth.checkToken,wishlistCtrl.removeFromFav);

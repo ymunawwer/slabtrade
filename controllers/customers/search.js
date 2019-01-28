@@ -44,7 +44,7 @@ const searchQuerywithprice = async (req,res,next)=>{
     var perpage = 10;
     var page = Math.max(0, req.query.page);
     if(req.query.type==='producttype'){
-    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
+    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).exec(function(err,result){
       if(err){  res.status(500).json({
             'error_code':500,
             'message':'Something went wrong',
@@ -59,7 +59,7 @@ const searchQuerywithprice = async (req,res,next)=>{
       })
     }else if(req.query.type==='color'){
         let color = '#'+req.query.id;
-        products.find({$and:[{'color':color},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
+        products.find({$and:[{'color':color},{'verification':1}]}).exec(function(err,result){
             if(err){  res.status(500).json({
                 'error_code':500,
                 'message':'Something went wrong',
@@ -134,7 +134,7 @@ const searchQuery = async (req,res,next)=>{
     var perpage = 10;
     var page = Math.max(0, req.query.page);
     if(req.query.type==='producttype'){
-    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
+    products.find({$and:[{'product_type':req.query.id},{'verification':1}]}).exec(function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
             'message':'Something went wrong',
@@ -163,7 +163,7 @@ const searchQuery = async (req,res,next)=>{
     }else if(req.query.type==='color'){
         let color = '#'+req.query.id;
     
-        products.find({$and:[{'color':color},{'verification':1}]}).limit(perpage).skip(page).exec(function(err,result){
+        products.find({$and:[{'color':color},{'verification':1}]}).exec(function(err,result){
             if(err){  res.status(500).json({
                 'error_code':500,
                 'message':'Something went wrong',
