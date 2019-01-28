@@ -109,7 +109,7 @@ const firstPageProduct = async (req,res,next)=>{
             'error_code':500,
             'message':'Something went wrong',
             'data':err});
-    }
+    }else{
         for( y in result){
             for(x in result[y].docs){
              
@@ -122,6 +122,7 @@ const firstPageProduct = async (req,res,next)=>{
                 }else{
                     res.status(200).json({'error_code':204,'message':'No item found'}); 
                 }
+            }
     })
 
 }
