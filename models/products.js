@@ -123,7 +123,7 @@ const ProductSchema = new Schema({
     },
     wishlist:[{
        type:Schema.Types.ObjectId,
-       unique:true
+       
     }],
     verification:{
         type:Number,
