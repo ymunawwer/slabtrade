@@ -628,7 +628,8 @@ const searchByDealsWithoutPrice=async(req,res,next)=>{
                 'error_code':500,
                 'message':'Something went wrong',
                 'data':err});
-        }if(result.length!==0){
+        }else if(typeof result!==undefined){
+            if(result.length!==0){
             for( y in result){
                 for(x in result[y].docs){
                  
@@ -639,7 +640,11 @@ const searchByDealsWithoutPrice=async(req,res,next)=>{
         res.status(200).json({'error_code':200,'data':result});
         }else{
             res.status(200).json({'error_code':204,'message':'No item found'}); 
-        }});
+        }}
+        else{
+            res.status(200).json({'error_code':204,'message':'No item found'}); 
+        }
+    });
 
 
     // let product = await products.find({'isoffer':1});
@@ -807,7 +812,9 @@ const mostviewed=async(req,res,next)=>{
                     'error_code':500,
                     'message':'Something went wrong',
                     'data':err});
-            }if(result.length!==0){
+            }else if(typeof result!=='undefined'){
+            
+            if(result.length!==0){
                 console.log(result)
                 for( y in result){
                     for(x in result[y].docs){
@@ -818,7 +825,10 @@ const mostviewed=async(req,res,next)=>{
             res.status(200).json({'error_code':200,'data':result});
             }else{
                 res.status(200).json({'error_code':204,'message':'No item found'}); 
-            }});
+            }}else{
+                res.status(200).json({'error_code':204,'message':'No item found'}); 
+            }
+        });
 
 
 
