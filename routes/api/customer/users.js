@@ -66,7 +66,7 @@ router.get('/mostviewed',customerController.mostviewed)
 
 router.get('/searchbyqtwithprice',auth.checkToken,customerController.searchByQualitywithprice)
 
-router.get('/searchbyqt',customerController.searchByQuality)
+router.post('/searchbyqt',customerController.searchByQuality)
 
 
 router.get('/mostviewedwithoutprice',customerController.mostViewedWithoutPrice)
