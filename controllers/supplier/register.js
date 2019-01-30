@@ -2,6 +2,7 @@ var user = require('../../models/user');
 var mail = require('../../services/mailService');
 var randomstring = require("randomstring");
 const register = async(req,res,next)=>{
+    try{
     console.log(req.body.data);
     
     pass = randomstring.generate({
@@ -11,7 +12,7 @@ const register = async(req,res,next)=>{
       console.log(pass)
     
     
-    var varuser = user.registerUser(req.body.alias,req.body.data.email,req.body.data.first_name, req.body.data.last_name,req.body.data.middle_name,pass,req.body.data.home_phone,req.body.data.work_phone,req.body.data.cell_phone,'active',req.body.data.address,req.body.data.city,req.body.data.state,req.body.data.country,req.body.data.zip,'supplier',req.body.data.mailing_address,req.body.data.mailing_city,req.body.data.mailing_state,req.body.data.mailing_country,req.body.data.mailing_zip,req.body.data.desc);
+    var varuser = user.registerUser(req.body.alias,req.body.data.email,req.body.data.first_name, req.body.data.last_name,req.body.data.middle_name,pass,req.body.data.fax,req.body.data.home_phone_country_code,req.body.data.work_phone_country_code,req.body.data.home_phone,req.body.data.work_phone,req.body.data.cell_phone,'active',req.body.data.address,req.body.data.city,req.body.data.state,req.body.data.country,req.body.data.zip,'supplier',req.body.data.mailing_address,req.body.data.mailing_city,req.body.data.mailing_state,req.body.data.mailing_country,req.body.data.mailing_zip,req.body.data.ports,req.body.data.desc);
     
      varuser.then(function(){
         mail.sendMailFunction(req.body.data.email,'Waiting For confirmation','Thank you for registering with us.<br>we inform you once your account is approved by admin','<b>Hi,</b><br>Thank you for registering with us.<br>Password:'+pass+'<br><br>we inform you once your account is approved by admin.<br><br><br><br><b>Thank You.</b>');
@@ -24,7 +25,11 @@ const register = async(req,res,next)=>{
     });
     
     
+    }catch(err){
+        res.status(422).json({'error_code':422,'message':"Please try again"});
     }
+}
+    
 
 
 const getUserName = async(req,res,next)=>{

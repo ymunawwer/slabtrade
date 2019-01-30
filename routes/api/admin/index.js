@@ -4,6 +4,7 @@ var auth = require('../../../middlewares/auth')
 var geo = require('../../../services/geocoding')
 
 
+router.use('/product',require('./product'))
 
 
 router.use('/user',
@@ -14,6 +15,7 @@ router.get('/geo',geo.geoCoding)
 router.use('/customer',
     require('./customer_supplier'));
 
+router.use('/material',require('./material'))
 
 
 router.use('/port',

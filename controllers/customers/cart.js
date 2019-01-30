@@ -3,6 +3,7 @@ var Order = require('../../models/order');
 var mongoose = require('mongoose');
 const User = require('../../models/user');
 var Product = require('../../models/products')
+const Json2csvParser = require('json2csv').Parser;
 
 
 const deleteAllItemFromCart = async (req, res, next) => {
@@ -110,7 +111,7 @@ const addToCart = async (req, res, next) => {
     city =await User.find({'_id':req.body.container[req.body.container.length-1]['bundle'][req.body.container[req.body.container.length-1].bundle.length-1]['supplier_id']})
     console.log(city)
     req.body.container[req.body.container.length-1]['city'] = city[0]['city']
-    if(req.body.container[req.body.container.length-1]['total_quantity']===6){
+    if(req.body.container[req.body.container.length-1]['total_quantity']===7){
         req.body.container[req.body.container.length-1]['container_full'] = 1;
         
 
@@ -168,11 +169,11 @@ const addToCart = async (req, res, next) => {
 
     //  console.log('city',req.body['bundle'][req.body['bundle'].length-1]['supplier_id'])    
 // newly_added_item_supplier_city[0]['city'].toLowerCase() === previously_added_item_supplier_city[0]['city'].toLowerCase()
-    
-if(city[0]['city']===previously_added_item_supplier_city[0]['city']){
+   
+if(city[0]['city']===previously_added_item_supplier_city[0]['city'] ){
     console.log(result)
-    
-
+    if(typeof result[0]['container'][req.body.container.length-1]!=='undefined'){   
+if(JSON.parse(result[0]['container'][req.body.container.length-1]['total_weight'])<57 ){
  
     Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
        
@@ -203,6 +204,15 @@ if(city[0]['city']===previously_added_item_supplier_city[0]['city']){
         console.log('body',req.body.container[req.body.container.length-1]['bundle'][req.body.container[req.body.container.length-1].bundle.length-1])
         return res.status(200).json({'error_code':200,'message':"succesfully saved"});
     });
+}else{
+    res.status(201).json({"error_code":201,"Message":"Weight increase 57lbs.Please reduce the weight."})
+
+}
+}
+else{
+    res.status(201).json({"error_code":201,"Message":"Please try again."})
+
+}
 }
 // 
 // else if( req.body['bundle'][req.body['bundle'].length-1]['supplier_id']!==JSON.stringify(result[0]['bundle'][result[0]['bundle'].length-1]['supplier_id']).replace(/"/g,"") ){
@@ -211,7 +221,7 @@ if(city[0]['city']===previously_added_item_supplier_city[0]['city']){
         
        
    
-        if(result[0]['container'][0]['total_quantity']%6!==0){
+        if(JSON.parse(result[0]['container'][0]['total_weight'])<57 || result[0]['container'][0]['total_quantity']%7!==0 ){
         var supplier_id = []
         await User.find({'city':previously_added_item_supplier_city[0]['city']}).exec((err,result)=>{
             result.forEach(el=>{
@@ -262,6 +272,7 @@ if(city[0]['city']===previously_added_item_supplier_city[0]['city']){
   
 
 }}else{
+    
     Cart.findOneAndUpdate({'user_id':req.body.user_id}, updated_data, {upsert:true}, function(err, doc){
        
         if (err)  {console.log(err)
@@ -434,6 +445,44 @@ const getCartItemByContainerId = function(req,res,next){
 
 }
 
+const downloadIr=async (req,res,next)=>{
+    var inspection_report = [];
+    // console.log('query',req.query)
+    Product.find({'bundle_number':req.query.id}).exec(async (err,result)=>{
+        if(err){
+            console.log(err)
+        }
+       console.log(result)
+        for (x in result[0]['inspection_report']){
+            if(x<req.query.quantity){
+                inspection_report.push({'bundle_id':req.query.id,'inspection_report':result[0]['inspection_report'][x]});
+          
+        }
+        }
+       
+    })
+    // inspection_report.push({'bundle_id':el['bundle_id'],'inspection_report':"pr['inspection_report']"});
+
+    // console.log(el['quantity'])
+
+    const fields = ['bundle_id', 'inspection_report'];
+const json2csvParser = new Json2csvParser({
+fields,
+
+unwindBlank: true,
+flatten: false
+});
+// res.status(200).json({'status_code':200,
+//                 'data':result});
+setTimeout(async function(){
+const csv = json2csvParser.parse(inspection_report);
+console.log(csv)
+res.attachment('Product_info.csv');
+            res.status(200).send(csv);
+
+},3000)
+}
+
 
 
 
@@ -447,6 +496,7 @@ module.exports = {
     allItemInCart,removeBundle,
     itemRemove,
     getCartItemByContainerId,
-    removeContainer
+    removeContainer,
+    downloadIr
    
 }

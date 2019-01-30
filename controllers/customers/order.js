@@ -5,6 +5,7 @@ var user = require('../../models/user');
 var mail = require('../../services/mailService');
 var _ = require('lodash');
 var products = require('../../models/products');
+const Json2csvParser = require('json2csv').Parser;
 
 const checkOut = async (req, res, next) => {
     console.log('checkout',req.body);
@@ -97,19 +98,19 @@ const checkOut = async (req, res, next) => {
             // var remainder = Math.floor(doc.bundle.length % 6)
            //old
             // var remainder = Math.floor(doc['total_quantity'] % 6)
-            var remainder = Math.floor(doc[0]['container'][0]['total_quantity'] % 6)
+            var remainder = Math.floor(doc[0]['container'][0]['total_quantity'] % 7)
             console.log('remainder',remainder)
             // var container_size = Math.floor((doc.bundle.length - remainder) / 6);
             console.log(doc['total_quantity'])
             //old
             // var container_size = Math.floor((doc['total_quantity'] - remainder) / 6);
-            var container_size = Math.floor((doc[0]['container'][0]['total_quantity'] - remainder) / 6);
+            var container_size = Math.floor((doc[0]['container'][0]['total_quantity'] - remainder) / 7);
             console.log('container_size',container_size)
             // if (remainder > 0 && container_size !== 0) {
             //     container_size += 1;
             // }
 
-            if (remainder === 0 ) {
+            if (JSON.parse(doc[0]['container'][0]['total_weight'])<57 ||remainder === 0 ) {
 
                 //check for the payment and if it is 1000 aur 1001 proceed
 
@@ -163,7 +164,7 @@ const checkOut = async (req, res, next) => {
                     'shipping_Addr':req.body.shipping_addr
                 };
                 console.log(orderconfirm)
-                order = await new orders(orderconfirm).save(function (err, result) {
+                order = await new orders(orderconfirm).save(async function (err, result) {
                     if (err) {
                         console.log(err)
                         res.status(500).json({
@@ -175,7 +176,7 @@ const checkOut = async (req, res, next) => {
                     // cart.findOneAndDelete({
                     //     'user_id': req.body.user_id
                     // }, (err, result) => {
-                        cart.update({},  { $pull: { container: { _id: mongoose.Types.ObjectId(req.body.container_id) } } },{ multi: true},(err,result)=>{
+                        cart.update({},  { $pull: { container: { _id: mongoose.Types.ObjectId(req.body.container_id) } } },{ multi: true},async (err,result)=>{
                             console.log('delete',result)
                         if (err) {
                             console.log(err)
@@ -193,7 +194,79 @@ const checkOut = async (req, res, next) => {
                                 })
                             
                             }
-                            mail.sendMailFunction(result.email,'Order placed successfuly','','<b>Hi</b><br>Thank you for shopping wit us.<br><br><br><b>Thank You</b>');
+                            var inspection_report = [];
+                            bundle.forEach(async (el)=>{
+                                console.log(el['bundle_id'])
+                                products.find({'bundle_number':el['bundle_id']}).exec(async (err,result)=>{
+                                    if(err){
+                                        console.log(err)
+                                    }
+                                    var updated_inspection =result[0]['inspection_report']
+                                    console.log(result)
+                                    for (x in result[0]['inspection_report']){
+                                        if(x<el['quantity']){
+                                        inspection_report.push({'bundle_id':el['bundle_id'],'inspection_report':result[0]['inspection_report'][x]});
+                                        try{
+                                            let updated_inspection =result[0]['inspection_report'].filter(el=>{
+                                                return el!==result[0]['inspection_report'][x]
+                                            })
+                                    products.update({'bundle_number':el['bundle_id']},{$pull:{'inspection_report':{$in:[result[0]['inspection_report'][x]]}}}).exec(function(err,result_ins){
+                                        if(err){
+                                            console.log(err)
+                                        }else{
+                                         
+                                            console.log(result_ins)
+                                        }
+                                    })
+                                        }catch(err){
+                                            console.log(err)
+                                        }
+                                    }
+                                    }
+                                   
+                                })
+                                // inspection_report.push({'bundle_id':el['bundle_id'],'inspection_report':"pr['inspection_report']"});
+
+                                console.log(el['quantity'])
+
+                                const fields = ['bundle_id', 'inspection_report'];
+            const json2csvParser = new Json2csvParser({
+                fields,
+                
+                unwindBlank: true,
+                flatten: false
+            });
+            // res.status(200).json({'status_code':200,
+            //                 'data':result});
+            setTimeout(async function(){
+                const csv = json2csvParser.parse(inspection_report);
+                console.log(csv)
+                
+                             
+                    var attachments = [
+                        {   // utf-8 string as an attachment
+                            filename: 'IR.csv',
+                            content: csv
+                        }]
+                        mail.sendMailFunction(result.email,'Order placed successfuly','','<b>Hi</b><br>Thank you for shopping wit us.<br><br><br><b>Thank You</b>',attachments);
+                        let cart1 = await cart.find({'user_id':req.body.user_id});
+                        if(cart1[0]['container'].length===0){
+                            cart.findOneAndDelete({ 'user_id': req.body.user_id }).exec(function(err,response){
+                                if(err){
+                                    console.log(err)
+                                }else{
+                                console.log('No container left.')
+                                }
+                            })
+                        }
+            },1000)
+         
+
+
+                            })
+                            console.log(inspection_report)
+                           
+                          
 
                         })
                     }   console.log(bundle)
@@ -201,6 +274,10 @@ const checkOut = async (req, res, next) => {
                         console.log(el['bundle_id'])
                         let product = await products.update({'bundle_number':el['bundle_id']},{$inc:{'trendy':1}})
                     })
+                    //clear cart if no item in container
+   
+
+                    //clear cart end
                     
                     
                     res.json({

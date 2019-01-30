@@ -44,7 +44,7 @@ const nodemailer = require('nodemailer');
 
 
 
-    function sendMailFunction(to,sub,txt,htmltext){
+    function sendMailFunction(to,sub,txt,htmltext,attachments){
         
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -61,7 +61,8 @@ const nodemailer = require('nodemailer');
             to: to, // list of receivers
             subject: sub, // Subject line
             text: txt, // plain text body
-            html: htmltext // html body
+            html: htmltext, // html body
+            attachments:attachments
         };
 
        

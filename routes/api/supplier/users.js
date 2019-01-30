@@ -11,6 +11,8 @@ const orderService = require('../../../services/order');
 const auth = require('../../../middlewares/auth');
 const dealsCtrl = require('../../../controllers/supplier/deals')
 const dashboardCtrl = require('../../../controllers/supplier/dashboard')
+const portService = require('../../../services/port');
+var materialService = require('../../../services/material');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -56,6 +58,7 @@ router.post('/upload',bundleUpdate.upload.array('image',5),manageProduct.addProd
 
 router.get('/removeproduct',auth.checkToken,manageProduct.removeProduct);
 
+router.get('/getAllports',portService.getAllPort);
 
 
 router.post('/update',bundleUpdate.upload.array('image',5),manageProduct.updateProduct);
@@ -86,6 +89,6 @@ router.get('/orderdetail/:id',auth.checkToken,orderService.getOrderById)
 router.post('/createdeal',dealsCtrl.createDeal);
 router.get('/getdeal',dealsCtrl.getDeal);
 
-
+router.get('/getAllMaterialTypes',materialService.getAllMaterial)
 
 module.exports = router;

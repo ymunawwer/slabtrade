@@ -225,6 +225,17 @@ const getAllProduct=async(req,res,next)=>{
                     'message':err})
             }else{
                 console.log(result)
+               if(typeof req.query.bundle_number!=='undefined'){
+                try{
+                    
+                    result = result.filter((el)=>{
+                        return el['bundle_number']!==req.query.bundle_number
+                    })
+
+                }catch(err){
+                    res.status(422).json({'error_code':422,'message':'please try again.'})
+                }
+            }
             res.status(200).json({'error_code':200,'data':result})
             }
         })
@@ -867,6 +878,266 @@ const mostviewed=async(req,res,next)=>{
 //  Mostly viewed
 
 
+
+//qualitytype
+
+const searchByQuality = async (req,res,next)=>{
+    let typeArray = [];
+    if(req.body.type = 'quality'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'quality': req.body.quality},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        for( y in result){
+            for(x in result[y].docs){
+             
+                delete result[y].docs[x].price;
+            }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}else if(req.body.type = 'type'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'product_type': req.body.type},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        for( y in result){
+            for(x in result[y].docs){
+             
+                delete result[y].docs[x].price;
+            }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}else if(req.body.type = 'qt'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'quality': req.body.quality},{ 'product_type': req.body.type},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        for( y in result){
+            for(x in result[y].docs){
+             
+                delete result[y].docs[x].price;
+            }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}
+}
+
+const searchByQualitywithprice = async (req,res,next)=>{
+    let typeArray = [];
+    if(req.body.type = 'quality'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'quality': req.body.quality},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        // for( y in result){
+        //     for(x in result[y].docs){
+             
+        //         delete result[y].docs[x].price;
+        //     }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}else if(req.body.type = 'type'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'product_type': req.body.product_type},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        // for( y in result){
+        //     for(x in result[y].docs){
+             
+        //         delete result[y].docs[x].price;
+        //     }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}else if(req.body.type = 'qt'){
+    products.aggregate([
+        
+        { '$match' : {$and:[{ 'quality': req.body.quality},{ 'product_type': req.body.product_type},{'verification':1}   ]}},
+        {       
+            '$group': {
+                '_id': '$product_type',
+                
+                'docs': { '$push': '$$ROOT'},
+            }
+        },
+        {
+            '$project': {
+                'docs': { 
+                    
+                    '$slice': ['$docs', 3]
+                    
+                }  
+            }
+        }
+    ],function(err,result){
+        if(err){  res.status(500).json({
+            'error_code':500,
+            'message':'Something went wrong',
+            'data':err});
+    }else{
+        // for( y in result){
+            // for(x in result[y].docs){
+             
+            //     delete result[y].docs[x].price;
+            // }}
+
+   
+            if(result!==null){
+                res.status(200).json({'error_code':200,'data':result});
+                }else{
+                    res.status(200).json({'error_code':204,'message':'No item found'}); 
+                }
+            }
+    })
+
+}
+}
+
+
 module.exports = {
     firstPageProductwithprice,
     searchQuerywithprice,
@@ -881,5 +1152,7 @@ module.exports = {
     mostViewedWithoutPrice,
     
     searchByDeals,
-    searchByDealsWithoutPrice
+    searchByDealsWithoutPrice,
+    searchByQualitywithprice,
+    searchByQuality
 }

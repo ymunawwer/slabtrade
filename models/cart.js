@@ -49,6 +49,10 @@ const CartSchema = new Schema({
                 type:Number,
                 required:true
             },
+            gross_weight:{
+                type:Number,
+                required:true
+            },
             Dimension:[{
                 width:{
                     type:String,
@@ -87,6 +91,12 @@ const CartSchema = new Schema({
         type:Number,
         default:0,
         required:true
+    },
+    total_weight:{
+        type:Number,
+        default:0,
+        required:true
+
     },
  
     tax:{
@@ -148,8 +158,8 @@ class CartClass{
 
 
 
-    static async updateCart(id,bundle,tax,shipping_cost,cart_total){
-        let updated_data = {'user_id':id,'bundle':bundle,'tax':tax,'shipping_cost':shipping_cost,'cart_total':cart_total};
+    static async updateCart(id,bundle,tax,shipping_cost,cart_total,total_weight){
+        let updated_data = {'user_id':id,'bundle':bundle,'tax':tax,'shipping_cost':shipping_cost,'cart_total':cart_total,'total_weight':total_weight};
         this.findOneAndUpdate({'user_id': id}, updated_data, {upsert:true}, function(err, doc){
             if (err) return res.send(500, { error: err });
             return res.send({'error_code':200,'message':'Succesfully saved'});

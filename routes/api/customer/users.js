@@ -11,11 +11,11 @@ var registerCtrl = require('../../../controllers/customers/register');
 const cartCtrl = require('../../../controllers/customers/cart');
 const mail = require('../../../services/mailService');
 const orderCtrl = require('../../../controllers/customers/order');
-const orderService = require('../../../services/order')
+const orderService = require('../../../services/order');
 const portService = require('../../../services/port');
-const requestslabCtrl = require('../../../controllers/customers/requestslab')
+const requestslabCtrl = require('../../../controllers/customers/requestslab');
 const cartnewCtrl = require('../../../controllers/customers/cartnew');
-const wishlistCtrl = require('../../../controllers/customers/wishlist')
+const wishlistCtrl = require('../../../controllers/customers/wishlist');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -64,10 +64,14 @@ router.get('/getdealswithoutprice',customerController.searchByDealsWithoutPrice)
 
 router.get('/mostviewed',customerController.mostviewed)
 
+router.get('/searchbyqtwithprice',auth.checkToken,customerController.searchByQualitywithprice)
+
+router.get('/searchbyqt',customerController.searchByQuality)
+
 
 router.get('/mostviewedwithoutprice',customerController.mostViewedWithoutPrice)
 
-router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to create and update cart item
+router.post('/addtocart',auth.checkToken,cartCtrl.addToCart); //same api to create and update cart item                                                                                                                                                                                                                                                                            
 
 // router.post('/addtocart',auth.checkToken,cartnewCtrl.addToCart);
 
@@ -91,6 +95,7 @@ router.get('/test',function(req,res,next){
 });
 
 router.get('/allorder',auth.checkToken,orderService.getallOrderByCustomer)
+router.get('/downloadir',auth.checkToken,cartCtrl.downloadIr)
 
 router.get('/getsimilarproduct',customerController.getAllProduct);
 

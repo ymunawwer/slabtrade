@@ -3,6 +3,7 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var cart = require('../../models/cart')
 var userModel =require('../../models/user');
+
 const login = async(req,res,next)=>{
     passport.authenticate('user-login', {session: false,failureRedirect: '/login'}, function(err, user, info){
         
@@ -31,25 +32,37 @@ const login = async(req,res,next)=>{
             cart.find({'user_id':result._id}).exec(function(err,result_cart){
               if(result_cart[0]!==undefined){
                 
-                console.log('container item',result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity'])
+                // console.log('container item',result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity'])
               // result['total_quantity']=result_cart[0].total_quantity;
               // if(typeof result_cart[0]['container'][result_cart[0]['container'].length-1]!=='undefined'){
               let user_detail = {'user_detail':result,'user':user}
-              if(result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']!==6){
-                user_detail['total_quantity']=result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']
-              }else if(result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']===6){
-              user_detail['total_quantity']=0//result_cart[0].total_quantity;
-              }
+              try{
+                var total_count = 0
+                result_cart[0]['container'].forEach(element => {
+                  console.log(element)
+                  total_count += element['total_quantity']
+                  user_detail['total_quantity']= total_count
+                  
+                });
+              // if(result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']!==6){
+              //   user_detail['total_quantity']=result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']
+              // }else if(result_cart[0]['container'][result_cart[0]['container'].length-1]['total_quantity']===6){
+              // user_detail['total_quantity']=0//result_cart[0].total_quantity;
+              // }
+            }catch(err){
+              user_detail['total_quantity']=0
+            }
               console.log(user_detail)
               
               return res.json({user_detail, token});
+         
               }else{
                 let user_detail = {'user_detail':result,'user':user}
                
                 
                 return res.json({user_detail, token});
               }
-  
+            
             })
 
           }else{

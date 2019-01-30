@@ -63,6 +63,7 @@ const addProduct = async (req,res,next)=>{
     }
         console.log(req.body.dimension);
         var verification;
+        var material_type = req.body.material_type
         let supplier_detail = await User.find({'_id':mongoose.Types.ObjectId(req.body.supplier_id)});
         if(supplier_detail[0]['verification_mode']==='auto' || typeof supplier_detail[0]['verification_mode']==='undefined'){
             verification = 1
@@ -70,7 +71,11 @@ const addProduct = async (req,res,next)=>{
             verification = 0
         }
         console.log(verification);
-        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type,req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report,offer_value,req.body.start_date,req.body.end_date,isoffer,req.body.preference,verification);
+        if(req.body.material_type==='others' && req.body.material_type_other !==''){
+            material_type = req.body.material_type_other
+            verification = 0
+        }
+        let product =  Product.addProduct(req.body.product_name,req.body.supplier_id,req.body.product_type,req.body.product_type_code,req.body.quality,req.body.price,req.body.color,req.body.width,req.body.height,req.body.unit,req.body.thickness,req.body.slab_weight,req.body.bundle_number,req.body.no_of_slabs,req.body.dimension,req.body.net_dimension,req.body.net_weight,images,req.body.product_description,req.body.bundle_description,req.body.inspection_report,offer_value,req.body.start_date,req.body.end_date,isoffer,req.body.preference,verification,req.body.gross_weight,material_type,8,req.body.net_price);
         product.then(function(result){
             res.status(200).send(result);
         }).catch(function(err){
@@ -180,7 +185,12 @@ const updateProduct = async(req,res,next)=>{
         }else if(req.body.offer_value==='0' || req.body.offer_value==='null'){
             is_offer_value = 0
         }
+        var material_type
         console.log('dimension type',typeof req.body.dimension)
+        if(req.body.material_type==='others' && req.body.material_type_other !==''){
+            material_type = req.body.material_type_other
+            verification = 0
+        }
 
     var product_obj = {
         'product_name': req.body.product_name,
@@ -205,7 +215,12 @@ const updateProduct = async(req,res,next)=>{
         'start_date':req.body.start_date,
         'end_date':req.body.end_date,
         'isoffer':is_offer_value,
-        'preference':req.body.slab_preference
+        'preference':req.body.slab_preference,
+        'gross_weight':req.body.gross_weight,
+        'material_type':material_type,
+        'verification':verification,
+        'slab_percentage':8,
+        'net_price':req.body.net_price
     };
 
     Product.findOneAndUpdate({'bundle_number':req.body.bundle_number},product_obj,function(err,result){
@@ -318,6 +333,8 @@ const getProduct = async(req,res,next)=>{
 
    
 }
+
+
     
 
 
@@ -331,6 +348,7 @@ module.exports = {
     removeProduct,
     updateProduct,
     addProduct,
+
     getAllProduct,
     uploadShippingDetail,
     getProduct
