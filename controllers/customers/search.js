@@ -883,26 +883,22 @@ const mostviewed=async(req,res,next)=>{
 
 const searchByQuality = async (req,res,next)=>{
     let typeArray = [];
-    if(req.body.type = 'quality'){
+    console.log(req.body)
+    if(req.body.type === 'quality'){
     products.aggregate([
         
-        { '$match' : {$and:[{ 'quality': req.body.quality},{'verification':1}   ]}},
+        { '$match' : {$and:[{ 'quality': req.body.quality },{'verification':1} ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
@@ -924,26 +920,21 @@ const searchByQuality = async (req,res,next)=>{
             }
     })
 
-}else if(req.body.type = 'type'){
+}else if(req.body.type === 'type'){
     products.aggregate([
         
-        { '$match' : {$and:[{ 'product_type': req.body.type},{'verification':1}   ]}},
+        { '$match' : {$and:[{ 'product_type': req.body.product_type},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
@@ -965,26 +956,21 @@ const searchByQuality = async (req,res,next)=>{
             }
     })
 
-}else if(req.body.type = 'qt'){
+}else if(req.body.type === 'qt'){
     products.aggregate([
         
-        { '$match' : {$and:[{ 'quality': req.body.quality},{ 'product_type': req.body.type},{'verification':1}   ]}},
+        { '$match' : {$and:[{ 'quality': req.body.quality},{ 'product_type': req.body.product_type},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
@@ -1011,26 +997,21 @@ const searchByQuality = async (req,res,next)=>{
 
 const searchByQualitywithprice = async (req,res,next)=>{
     let typeArray = [];
-    if(req.body.type = 'quality'){
+    if(req.body.type === 'quality'){
     products.aggregate([
         
         { '$match' : {$and:[{ 'quality': req.body.quality},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
@@ -1052,26 +1033,21 @@ const searchByQualitywithprice = async (req,res,next)=>{
             }
     })
 
-}else if(req.body.type = 'type'){
+}else if(req.body.type === 'type'){
     products.aggregate([
         
         { '$match' : {$and:[{ 'product_type': req.body.product_type},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
@@ -1093,26 +1069,21 @@ const searchByQualitywithprice = async (req,res,next)=>{
             }
     })
 
-}else if(req.body.type = 'qt'){
+}else if(req.body.type === 'qt'){
     products.aggregate([
         
         { '$match' : {$and:[{ 'quality': req.body.quality},{ 'product_type': req.body.product_type},{'verification':1}   ]}},
         {       
             '$group': {
                 '_id': '$product_type',
-                
-                'docs': { '$push': '$$ROOT'},
+                'docs': { '$push': '$$ROOT' },
             }
         },
         {
-            '$project': {
-                'docs': { 
-                    
-                    '$slice': ['$docs', 3]
-                    
-                }  
+            '$project':{ 
+                'docs':'$docs'
             }
-        }
+            }
     ],function(err,result){
         if(err){  res.status(500).json({
             'error_code':500,
