@@ -178,7 +178,7 @@ const orderStatus = function(req,res,next){
 
 
 const getallorderBySupplier = function(req,res,next){
-  
+  try{
     Order.aggregate([
         {$match: {'products.supplier_id': mongoose.Types.ObjectId(req.query.id)}},
         {$project: {
@@ -223,6 +223,15 @@ const getallorderBySupplier = function(req,res,next){
 
         }
     })
+}catch(err){
+    res.status(422).json({
+                
+        "error_code":422,
+        "message":"Please try again.",
+        
+    })
+
+}
 
 
 
